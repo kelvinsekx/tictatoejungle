@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from "react";
+import TwoPlayers from "./apps/TwoPlayers";
+import OnePlayer from "./apps/OnePlayer";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function XJungle () {
+  const [player, setPlayer ] = useState("oneplayer")
+  const XJungle = player === "oneplayer" ? <OnePlayer /> : <TwoPlayers />
+  return <div>
+    <nav>
+      <h2>XJungle</h2>
+    </nav>
+    <main>
+      <div className="ad"/>
+      <div className="junglearea">
+        {XJungle}
+        <nav style={{marginTop: '2rem'}}>
+          <button onClick={()=>setPlayer("oneplayer")}>
+            One Player
+          </button>
+          <button onClick={()=>setPlayer("twoplayers")}>
+            Two Players
+          </button>
+        </nav>
+      </div>
+      <div className="ad"/> 
+    </main>
+  </div>
 }
 
-export default App;
+export default XJungle;
