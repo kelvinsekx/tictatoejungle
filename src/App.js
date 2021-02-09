@@ -8,22 +8,28 @@ function XJungle () {
   return <div>
     <nav>
       <h2>XJungle</h2>
-    </nav>
-    <main>
-      <div className="ad"/>
-      <div className="junglearea">
-        {XJungle}
-        <nav style={{marginTop: '2rem'}}>
-          <button onClick={()=>setPlayer("oneplayer")}>
+          <button className="navBtn" 
+            style={{position: "relative", top: "1.4rem"}} 
+            onClick={()=>setPlayer("oneplayer")}>
             One Player
           </button>
-          <button onClick={()=>setPlayer("twoplayers")}>
+          <button className="navBtn"
+          style={{position: "relative", top: "1.4rem"}} 
+          onClick={()=>setPlayer("twoplayers")}>
             Two Players
           </button>
-        </nav>
+    </nav>
+    <main>
+      <div className="ad-1"/>
+      <div className="junglearea">
+        {XJungle}
       </div>
-      <div className="ad"/> 
+      <div className="ad-2"/> 
     </main>
+    <footer>
+      <p>Hi, this web game, XJungle, is created and maintained by <a href="https://ww.kelvinsekx/codes">kelvinsekx</a> together with the love I have for you.</p>
+      <div><strong>About XJungle :</strong> This is an interesting game very similar to the tic tac toe game only with a twist. It is a popular paper game in Nigeria {'\u{1F600}'}. </div>
+    </footer>
   </div>
 }
 

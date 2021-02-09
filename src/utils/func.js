@@ -21,3 +21,10 @@ export function checkWinnerExist(arr, filter) {
     }
     return false;
   }
+
+export function mutatePossibleMvt(ext, mutant) {
+  let newExt = ext.slice()
+  newExt[mutant[0]].vl = null;
+  newExt[mutant[1]].vl = 'x'
+  return newExt
+}

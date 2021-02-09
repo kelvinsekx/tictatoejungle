@@ -1,0 +1,51 @@
+@media (max-width: 589px){
+      
+      main{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 95%;
+        margin: 0 auto;
+        /* border: 2px solid red; */
+      }
+      .ad-1{
+        display: none;
+      }
+      .ad-2{
+        position: sticky;
+        bottom: 1px;
+     }
+     footer{
+         margin-top: 9rem;
+         padding: 1rem 0.2rem;
+     }
+
+     .junglearea {
+        top: 1.2rem;
+    }
+     #xBoard {
+        width: 24rem;
+        height: 24rem;
+        margin-top: 1rem;
+    }
+
+    .recol-11::before {
+        height: 148%;
+        transform: translateY(-3px) translateX(-2px) rotate(-46deg);
+    }
+
+    .recol-21:before{
+        height: 146%;
+        transform: translateY(-1px) translateX(183.5px) rotate(46deg);
+      }
+     
+      .recol-1:before{
+        height: 153%;
+        transform: translateY(-3px) translateX(184px) rotate(48deg);
+      }
+
+      .recol-2:before{
+        height: 150%;
+        transform: translateY(-1px) translateX(4px) rotate(-48deg);  
+      }
+}

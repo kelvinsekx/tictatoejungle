@@ -1,9 +1,9 @@
 import React from "react";
 import "../index.css";
 import {possibleMovements,winningPosition} from '../utils/util'
-import {checkItIncludes,checkWinnerExist} from "../utils/func";
+import {checkItIncludes,checkWinnerExist, mutatePossibleMvt} from "../utils/func";
 
-function findPossibleMoveable (ext) {
+function findPossibleMoveable (ext, nHits) {
   let psm = possibleMovements;
   let keepState = [];
   /**try to keep the state of available movements for x */
@@ -12,18 +12,22 @@ function findPossibleMoveable (ext) {
         keepState.push(c)
       }
   }
-  //console.log(keepState);
+  console.log(keepState);
   const l = keepState.length;
-  const r = Math.floor(Math.random()* l)
+  /**think like a fool*/const r = Math.floor(Math.random()* l)
+  // dont think like a fool
+  if(l > 2){
+    // if there are plenty movements and we have "X" at the middle
+    // donot move the "X" at the middle
+    for (let x of keepState){
+      if(x[0] !== 4){
+        return x;
+      }
+    }
+  }
+
   return keepState[r];
 };
-
-function mutatePossibleMvt(ext, mutant) {
-  let newExt = ext.slice()
-  newExt[mutant[0]].vl = null;
-  newExt[mutant[1]].vl = 'x'
-  return newExt
-}
 
 class OnePlayer extends React.Component {
   constructor(props) {
@@ -46,13 +50,14 @@ class OnePlayer extends React.Component {
       winner: false,
       wrongMove: false,
       cheat: false,
+      hits: 0,
     };
   }
 
-  NEXTPLAYER = ( wS,existingMovements) => {
+  NEXTPLAYER = ( wS,existingMovements, nHits) => {
     if(this.state.winner)return;
     const ext = existingMovements
-    const fExt = findPossibleMoveable(ext);
+    const fExt = findPossibleMoveable(ext, nHits);
      console.log(wS);
     let mvt = mutatePossibleMvt(ext, fExt)
     return this.setState({
@@ -71,6 +76,7 @@ class OnePlayer extends React.Component {
     // Algo1: Highlight each BOX
     let copyHighlight = Array(9).fill(null);
     copyHighlight[index] = true;
+    let prevHits = this.state.hits;
     // Algo2:
     let makeFormerBoox = this.state.boox.slice();
 
@@ -101,9 +107,10 @@ class OnePlayer extends React.Component {
           winner: checkWinner,
           wrongMove: false,
           cheat: false,
+          hits: prevHits + 1
         });
         setTimeout( 
-          ()=>this.NEXTPLAYER( this.state.whoIsNext, makeFormerBoox), 2000)
+          ()=>this.NEXTPLAYER( this.state.whoIsNext, makeFormerBoox, this.state.hits), 2000)
       } else {
         return this.setState({
           wrongMove: true,
@@ -145,23 +152,24 @@ class OnePlayer extends React.Component {
 
   restart = () => {
     return this.setState({
-        boox: [
-            { vl: "y", isPT: false },
-            { vl: "y", isPT: false },
-            { vl: "y", isPT: false },
-            { vl: null, isPT: false },
-            { vl: null, isPT: false },
-            { vl: null, isPT: false },
-            { vl: "x", isPT: false },
-            { vl: "x", isPT: false },
-            { vl: "x", isPT: false },
-          ],
-        highlight: Array(9).fill(null),
-        spaceX: null,
-        whoIsNext: true,
-        winner: false,
-        wrongMove: false,
-        cheat: false,
+      boox: [
+        { vl: "y", isPT: false },
+        { vl: "y", isPT: false },
+        { vl: "y", isPT: false },
+        { vl: null, isPT: false },
+        { vl: null, isPT: false },
+        { vl: null, isPT: false },
+        { vl: "x", isPT: false },
+        { vl: "x", isPT: false },
+        { vl: "x", isPT: false },
+      ],
+      highlight: Array(9).fill(null),
+      spaceX: null,
+      whoIsNext: true,
+      winner: false,
+      wrongMove: false,
+      cheat: false,
+      hits: 0,
       });
   };
   render() {
@@ -175,13 +183,13 @@ class OnePlayer extends React.Component {
       </Pronounce>
     ) : this.state.whoIsNext ? (
       <div>
-        <Pronounce>Y, you are next</Pronounce>
+        <Pronounce styles={{backgroundColor: "yellow", color: "#000"}}>Y, you are next</Pronounce>
 
         {this.state.cheat ? <Cheated> X dont cheat naa</Cheated> : ""}
       </div>
     ) : (
       <div>
-        <Pronounce>X, you are Next </Pronounce>
+        <Pronounce styles={{backgroundColor: "green", color: "#fff"}}>X, you are Next </Pronounce>
 
         {this.state.cheat ? <Cheated> Y dont cheat joor joor</Cheated> : null}
       </div>
@@ -278,8 +286,9 @@ class Box extends React.Component {
   }
 }
 
-function Pronounce({ children }) {
-  return <span style={{ fontSize: "1.4rem" }}>{children}</span>;
+function Pronounce({ children, styles }) {
+
+  return <span style={{ fontSize: "1.4rem", ...styles }}>{children}</span>;
 }
 
 function Cheated({ children }) {
