@@ -15,7 +15,7 @@ export function checkWinnerExist(arr, filter) {
           filter[each[0]].isPT = true
           filter[each[1]].isPT = true
           filter[each[2]].isPT = true;
-          console.log(filter)
+          // console.log(filter)
         return filter;
       }
     }
@@ -27,4 +27,10 @@ export function mutatePossibleMvt(ext, mutant) {
   newExt[mutant[0]].vl = null;
   newExt[mutant[1]].vl = 'x'
   return newExt
+}
+
+export const cheat = function (){
+  const mss = ["it isn't your turn naa", "don't cheat joor", "be guided, you're not next", "hope you didn't play too fast"];
+  let random = Math.floor(Math.random() * mss.length);
+  return mss[random];
 }

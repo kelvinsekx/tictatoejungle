@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import './css/mobile.css'
+import './css/min-mobile.css'
 import XJungle from './App';
 import reportWebVitals from './reportWebVitals';
 

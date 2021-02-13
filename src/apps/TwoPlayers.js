@@ -1,7 +1,7 @@
 import React from "react";
 import "../index.css";
 import {possibleMovements,winningPosition} from '../utils/util'
-import {checkItIncludes,checkWinnerExist} from "../utils/func";
+import {checkItIncludes,checkWinnerExist, cheat} from "../utils/func";
 
 class TwoPlayers extends React.Component {
   constructor(props) {
@@ -141,13 +141,13 @@ class TwoPlayers extends React.Component {
       <div>
         <Pronounce>Y, you are next</Pronounce>
 
-        {this.state.cheat ? <Cheated> X dont cheat naa</Cheated> : ""}
+        {this.state.cheat ? <Cheated> X {cheat()}</Cheated> : ""}
       </div>
     ) : (
       <div>
         <Pronounce>X, you are Next </Pronounce>
 
-        {this.state.cheat ? <Cheated> Y dont cheat joor joor</Cheated> : null}
+        {this.state.cheat ? <Cheated> Y {cheat()}</Cheated> : null}
       </div>
     );
     return (
@@ -155,7 +155,9 @@ class TwoPlayers extends React.Component {
         <button onClick={() => this.restart()} className="restart">
         RESTART GAME
       </button>
+      <div>
         {status}
+      </div>
         <div id="xBoard">
           <div className="flex">
             <Box

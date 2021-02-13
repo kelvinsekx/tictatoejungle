@@ -1,9 +1,9 @@
 import React from "react";
 import "../index.css";
-import {possibleMovements,winningPosition} from '../utils/util'
-import {checkItIncludes,checkWinnerExist, mutatePossibleMvt} from "../utils/func";
+import {possibleMovements,winningPosition, ptA} from '../utils/util'
+import {checkItIncludes,checkWinnerExist, mutatePossibleMvt, cheat} from "../utils/func";
 
-function findPossibleMoveable (ext, nHits) {
+function findPossibleMoveable (ext) {
   let psm = possibleMovements;
   let keepState = [];
   /**try to keep the state of available movements for x */
@@ -14,19 +14,63 @@ function findPossibleMoveable (ext, nHits) {
   }
   console.log(keepState);
   const l = keepState.length;
-  /**think like a fool*/const r = Math.floor(Math.random()* l)
-  // dont think like a fool
-  if(l > 2){
-    // if there are plenty movements and we have "X" at the middle
-    // donot move the "X" at the middle
-    for (let x of keepState){
-      if(x[0] !== 4){
-        return x;
-      }
-    }
+  /** dont think like a fool */
+  if(l < 2){
+    /**
+     * # if the state is just one,
+     * # return it, and end the thinking
+     */
+    return keepState[0]
   }
 
-  return keepState[r];
+  if(l >= 2){
+    /** "(* ! *)"  */
+  /** my name is ROBOT sekx */
+  /** I have been built not to be foolish, */
+  /** and not to be too smart. */
+  /** my job here is just simple, win when given the 
+   * most foolish opportunity to.
+   * thanks,
+   * 
+   *                      Yours sincerely,
+   *                       Robot, sekx.
+  */
+    function TMWTD(){
+      for(let x of ptA) {
+      let truthy = true;
+      if(keepState.length === x.ar.length){
+        for(let i = 0; i < keepState.length; i++){
+          if(keepState[i][0] !== x.ar[i][0] || 
+            keepState[i][1] !== x.ar[i][1]){
+              truthy = false
+            }
+        }
+        if(truthy) return x.pt;
+      }
+    }}
+    let td = TMWTD()
+    //console.log(td)
+    if(td === 'I'){
+      return keepState[1]
+    }else if(td === 'II'){
+      return keepState[5]
+    }else if(td === 'III'){
+      return keepState[3]
+    }else if(td === 'IV'){
+      return keepState[2]
+    }else if (td === 'V'){
+      return keepState[6]
+    }else if (td === 'VI'){
+      return keepState[5]
+    }else if (td === 'VII'){
+      return keepState[1]
+    }else if (td === 'VIII'){
+      return keepState[1]
+    }
+    else{
+      return keepState[Math.floor(Math.random()* l)]
+    }
+  }
 };
 
 class OnePlayer extends React.Component {
@@ -50,18 +94,24 @@ class OnePlayer extends React.Component {
       winner: false,
       wrongMove: false,
       cheat: false,
-      hits: 0,
     };
   }
 
-  NEXTPLAYER = ( wS,existingMovements, nHits) => {
+  NEXTPLAYER = ( wS,existingMovements) => {
+    let checkWinner;
     if(this.state.winner)return;
     const ext = existingMovements
-    const fExt = findPossibleMoveable(ext, nHits);
-     console.log(wS);
+    const fExt = findPossibleMoveable(ext);
+     // console.log(wS);
     let mvt = mutatePossibleMvt(ext, fExt)
+    // check if winner exist
+        // if it does tell me
+        if (checkWinnerExist(winningPosition, ext)) {
+          checkWinner = true;
+        }
     return this.setState({
       boox : mvt,
+      winner: checkWinner,
       whoIsNext: !wS,
     })
   };
@@ -76,7 +126,6 @@ class OnePlayer extends React.Component {
     // Algo1: Highlight each BOX
     let copyHighlight = Array(9).fill(null);
     copyHighlight[index] = true;
-    let prevHits = this.state.hits;
     // Algo2:
     let makeFormerBoox = this.state.boox.slice();
 
@@ -97,20 +146,18 @@ class OnePlayer extends React.Component {
         if (checkWinnerExist(winningPosition, makeFormerBoox)) {
           let newBoox = checkWinnerExist(winningPosition, makeFormerBoox)
           checkWinner = true;
-          console.log(newBoox)
+          //console.log(newBoox)
           makeFormerBoox = newBoox
-          //makeFormerBoox[index].
         }
          this.setState({
           boox: makeFormerBoox,
           whoIsNext: !this.state.whoIsNext,
           winner: checkWinner,
           wrongMove: false,
-          cheat: false,
-          hits: prevHits + 1
+          cheat: false
         });
         setTimeout( 
-          ()=>this.NEXTPLAYER( this.state.whoIsNext, makeFormerBoox, this.state.hits), 2000)
+          ()=>this.NEXTPLAYER( this.state.whoIsNext, makeFormerBoox), 1450)
       } else {
         return this.setState({
           wrongMove: true,
@@ -185,13 +232,13 @@ class OnePlayer extends React.Component {
       <div>
         <Pronounce styles={{backgroundColor: "yellow", color: "#000"}}>Y, you are next</Pronounce>
 
-        {this.state.cheat ? <Cheated> X dont cheat naa</Cheated> : ""}
+        {this.state.cheat ? <Cheated> X {cheat()}</Cheated> : ""}
       </div>
     ) : (
       <div>
         <Pronounce styles={{backgroundColor: "green", color: "#fff"}}>X, you are Next </Pronounce>
 
-        {this.state.cheat ? <Cheated> Y dont cheat joor joor</Cheated> : null}
+        {this.state.cheat ? <Cheated> Y {cheat()}</Cheated> : null}
       </div>
     );
     return (

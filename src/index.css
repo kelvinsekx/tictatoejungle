@@ -54,7 +54,9 @@ padding: 2rem 6rem;
   }
 
 #mrk{
-  background-color: rgb(182, 24, 24);
+  background-color: rgba(182, 24, 24, 0.4);
+  color:rgb(199, 15, 15);
+  font-weight: 600;
 }
 .restart{
   background-color: rgb(66, 66, 197);
@@ -145,7 +147,7 @@ nav{
   width:0px;
   background-color: none;
   transform-origin: top;
-  transform: translateY(1px) translateX(3px) rotate(-47deg);  
+  transform: translateY(-1px) translateX(1px) rotate(-47deg);  
   z-index:-100; 
 }
 .recol-2:before{
