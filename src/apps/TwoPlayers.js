@@ -1,7 +1,8 @@
 import React from "react";
 import "../index.css";
 import {possibleMovements,winningPosition} from '../utils/util'
-import {checkItIncludes,checkWinnerExist, cheat} from "../utils/func";
+import {checkItIncludes,checkWinnerExist} from "../utils/func";
+import {DecideWhatNext, BoxTriangle1, BoxTriangle2,Box} from "../utils/reactiUtil"
 
 class TwoPlayers extends React.Component {
   constructor(props) {
@@ -129,33 +130,14 @@ class TwoPlayers extends React.Component {
       });
   };
   render() {
-    let status = this.state.wrongMove ? (
-      <Pronounce> Kharrma, this is an impossible movement</Pronounce>
-    ) : this.state.winner ? (
-      <Pronounce>
-        <strong>
-          {this.state.whoIsNext ? "X" : "Y"}!! OSHABLOBLO..you won
-        </strong>
-      </Pronounce>
-    ) : this.state.whoIsNext ? (
-      <div>
-        <Pronounce>Y, you are next</Pronounce>
-
-        {this.state.cheat ? <Cheated> X {cheat()}</Cheated> : ""}
-      </div>
-    ) : (
-      <div>
-        <Pronounce>X, you are Next </Pronounce>
-
-        {this.state.cheat ? <Cheated> Y {cheat()}</Cheated> : null}
-      </div>
-    );
+    let status = DecideWhatNext(this.state)
     return (
       <div>
         <button onClick={() => this.restart()} className="restart">
-        RESTART GAME
-      </button>
+          RESTART GAME
+        </button>
       <div>
+        <h2 style={{fontSize: '66%'}}>Sekx predicted X to beat Y (prove him wrong)</h2>
         {status}
       </div>
         <div id="xBoard">
@@ -227,56 +209,6 @@ class TwoPlayers extends React.Component {
       </div>
     );
   }
-}
-
-class Box extends React.Component {
-  render() {
-    return (
-      <button
-        className={`box ${this.props.className}`}
-        onClick={this.props.onClick}
-        id={this.props.id}
-      >
-        {this.props.v}
-      </button>
-    );
-  }
-}
-
-function Pronounce({ children }) {
-  return <span style={{ fontSize: "1.4rem" }}>{children}</span>;
-}
-
-function Cheated({ children }) {
-  return (
-    <span
-      style={{
-        backgroundColor: "yellowgreen",
-        color: "rgb(186, 9, 9)",
-        fontSize: "1.5rem",
-      }}
-    >
-      {children}
-    </span>
-  );
-}
-
-function BoxTriangle1() {
-  return (
-    <div className="recol-container">
-      <div className="recol-11"></div>
-      <div className="recol-21"></div>
-    </div>
-  );
-}
-
-function BoxTriangle2() {
-  return (
-    <div className="recol-container">
-      <div className="recol-1"></div>
-      <div className="recol-2"></div>
-    </div>
-  );
 }
 
 export default TwoPlayers;

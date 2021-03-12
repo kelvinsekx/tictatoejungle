@@ -1,5 +1,12 @@
 @media (max-width: 589px){
-      
+      .cheated{
+        left: -4em;
+      }
+
+      .ack{
+          width: 95%;
+           
+      }
       main{
         display: flex;
         flex-direction: column;
@@ -47,5 +54,10 @@
       .recol-2:before{
         height: 150%;
         transform: translateY(-1px) translateX(4px) rotate(-48deg);  
+      }
+      .pron{
+        font-size: 92%;
+        font-weight: bolder;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
       }
 }

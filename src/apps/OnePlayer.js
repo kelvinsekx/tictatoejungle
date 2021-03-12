@@ -1,7 +1,9 @@
 import React from "react";
 import "../index.css";
 import {possibleMovements,winningPosition, ptA} from '../utils/util'
-import {checkItIncludes,checkWinnerExist, mutatePossibleMvt, cheat} from "../utils/func";
+import {checkItIncludes,checkWinnerExist, mutatePossibleMvt} from "../utils/func";
+import {DecideWhatNext, BoxTriangle1, BoxTriangle2, Box} from "../utils/reactiUtil"
+
 
 function findPossibleMoveable (ext) {
   let psm = possibleMovements;
@@ -12,7 +14,8 @@ function findPossibleMoveable (ext) {
         keepState.push(c)
       }
   }
-  console.log(keepState);
+  /**important for debugging */
+  //console.log(keepState);
   const l = keepState.length;
   /** dont think like a fool */
   if(l < 2){
@@ -220,154 +223,55 @@ class OnePlayer extends React.Component {
       });
   };
   render() {
-    let status = this.state.wrongMove ? (
-      <Pronounce> Kharrma, this is an impossible movement</Pronounce>
-    ) : this.state.winner ? (
-      <Pronounce>
-        <strong>
-          {this.state.whoIsNext ? "X" : "Y"}!! OSHABLOBLO..you won
-        </strong>
-      </Pronounce>
-    ) : this.state.whoIsNext ? (
-      <div>
-        <Pronounce styles={{backgroundColor: "yellow", color: "#000"}}>Y, you are next</Pronounce>
-
-        {this.state.cheat ? <Cheated> X {cheat()}</Cheated> : ""}
-      </div>
-    ) : (
-      <div>
-        <Pronounce styles={{backgroundColor: "green", color: "#fff"}}>X, you are Next </Pronounce>
-
-        {this.state.cheat ? <Cheated> Y {cheat()}</Cheated> : null}
-      </div>
-    );
+    let status = DecideWhatNext(this.state)
     return (
       <div>
         <button onClick={() => this.restart()} className="restart">
         RESTART GAME
       </button>
-          <h2 style={{fontSize: '66%'}}>XJungler...now you're playing agains sekx</h2>
+          <h2 style={{fontSize: '66%'}}>XJungler...now you're playing against sekx</h2>
         {status}
         <div id="xBoard">
           <div className="flex">
-            <Box
-              v={this.state.boox[0].vl}
-              onClick={() => this.handleClick(0)}
-              className={this.state.highlight[0] ? "highlight" : ""}
-              id = {this.state.boox[0].isPT ? 'mrk' : null}
+            {[0,1,2].map(
+              each=><Box
+              v={this.state.boox[each].vl}
+              onClick={() => this.handleClick(each)}
+              className={this.state.highlight[each] ? "highlight" : ""}
+              id = {this.state.boox[each].isPT ? 'mrk' : null}
+              key={each}
             />
-            <Box
-              v={this.state.boox[1].vl}
-              onClick={() => this.handleClick(1)}
-              className={this.state.highlight[1] ? "highlight" : ""}
-              id = {this.state.boox[1].isPT ? 'mrk' : null}
-            />
-            <Box
-              v={this.state.boox[2].vl}
-              onClick={() => this.handleClick(2)}
-              className={this.state.highlight[2] ? "highlight" : ""}
-              id = {this.state.boox[2].isPT ? 'mrk' : null}
-            />
+            )}
+
           </div>
           <BoxTriangle1 />
           <div className="flex fcv">
-            <Box
-              v={this.state.boox[3].vl}
-              onClick={() => this.handleClick(3)}
-              className={this.state.highlight[3] ? "highlight" : ""}
-              id = {this.state.boox[3].isPT ? 'mrk' : null}
+          {[3,4,5].map(
+              each=><Box
+              key={each}
+              v={this.state.boox[each].vl}
+              onClick={() => this.handleClick(each)}
+              className={this.state.highlight[each] ? "highlight" : ""}
+              id = {this.state.boox[each].isPT ? 'mrk' : null}
             />
-            <Box
-              v={this.state.boox[4].vl}
-              onClick={() => this.handleClick(4)}
-              className={this.state.highlight[4] ? "highlight" : ""}
-              id = {this.state.boox[4].isPT ? 'mrk' : null}
-            />
-            <Box
-              v={this.state.boox[5].vl}
-              onClick={() => this.handleClick(5)}
-              className={this.state.highlight[5] ? "highlight" : ""}
-              id = {this.state.boox[5].isPT ? 'mrk' : null}
-            />
+            )}
           </div>
           <BoxTriangle2 />
           <div className="flex">
-            <Box
-              v={this.state.boox[6].vl}
-              onClick={() => this.handleClick(6)}
-              className={this.state.highlight[6] ? "highlight" : ""}
-              id = {this.state.boox[6].isPT ? 'mrk' : null}
+          {[6,7,8].map(
+              each=><Box
+              v={this.state.boox[each].vl}
+              key={each}
+              onClick={() => this.handleClick(each)}
+              className={this.state.highlight[each] ? "highlight" : ""}
+              id = {this.state.boox[each].isPT ? 'mrk' : null}
             />
-
-            <Box
-              v={this.state.boox[7].vl}
-              onClick={() => this.handleClick(7)}
-              className={this.state.highlight[7] ? "highlight" : ""}
-              id = {this.state.boox[7].isPT ? 'mrk' : null}
-            />
-
-            <Box
-              v={this.state.boox[8].vl}
-              onClick={() => this.handleClick(8)}
-              className={this.state.highlight[8] ? "highlight" : ""}
-              id = {this.state.boox[8].isPT ? 'mrk' : null}
-            />
+            )}
           </div>
         </div>
       </div>
     );
   }
-}
-
-class Box extends React.Component {
-  render() {
-    return (
-      <button
-        className={`box ${this.props.className}`}
-        onClick={this.props.onClick}
-        id={this.props.id}
-      >
-        {this.props.v}
-      </button>
-    );
-  }
-}
-
-function Pronounce({ children, styles }) {
-
-  return <span style={{ fontSize: "1.4rem", ...styles }}>{children}</span>;
-}
-
-function Cheated({ children }) {
-  return (
-    <span
-      style={{
-        backgroundColor: "yellowgreen",
-        color: "rgb(186, 9, 9)",
-        fontSize: "1.5rem",
-      }}
-    >
-      {children}
-    </span>
-  );
-}
-
-function BoxTriangle1() {
-  return (
-    <div className="recol-container">
-      <div className="recol-11"></div>
-      <div className="recol-21"></div>
-    </div>
-  );
-}
-
-function BoxTriangle2() {
-  return (
-    <div className="recol-container">
-      <div className="recol-1"></div>
-      <div className="recol-2"></div>
-    </div>
-  );
 }
 
 export default OnePlayer;
