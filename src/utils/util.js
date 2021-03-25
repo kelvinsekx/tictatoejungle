@@ -21,7 +21,7 @@ export const winningPosition = [
     [0, 4, 8],
 ];
 
-export  const ptA = [
+export  const predeterminedAvailableMovements = [
   {pt: 'I', 
     ar: [[6,4], [7,4], [8,5], [8,4]]},
   {pt: 'II', 

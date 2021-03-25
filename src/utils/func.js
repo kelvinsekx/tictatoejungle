@@ -1,3 +1,8 @@
+function random (varr){
+  const random = Math.floor(Math.random()*varr.length)
+  return random;
+}
+
 export function checkItIncludes(arr, ex) {
     for (let each of arr) {
       if (each[0] === ex[0] && each[1] === ex[1]) return true;
@@ -30,7 +35,15 @@ export function mutatePossibleMvt(ext, mutant) {
 }
 
 export const cheat = function (){
-  const mss = ["it isn't your turn naa", "don't cheat joor", "be guided, you're not next", "hope you didn't play too fast"];
-  let random = Math.floor(Math.random() * mss.length);
-  return mss[random];
+  const mss = ["it isn't your turn naa", 
+    "don't cheat joor", 
+    "be guided, you're not next", 
+    "hope you didn't play too fast"];
+  return mss[random(mss)];
+}
+
+// predicted winner : this must be only called once
+export function predictedWinner (){
+  let winnerCouldBe = ['x', 'y']
+  return winnerCouldBe[random(winnerCouldBe)]
 }

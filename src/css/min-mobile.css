@@ -1,5 +1,7 @@
-@media (max-width: 489px){
-      
+@media (max-width: 389px){
+      #pr-kr{
+        font-size: 85%;
+      }
     main{
       display: flex;
       flex-direction: column;
@@ -20,9 +22,6 @@
        padding: 1rem 0.2rem;
    }
 
-   .junglearea {
-      top: 1.2rem;
-  }
    #xBoard {
       width: 20rem;
       height: 20rem;

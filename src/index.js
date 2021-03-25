@@ -1,11 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-// crazy css files
-import './index.css';
-import './css/mobile.css'
-import './css/min-mobile.css'
-import './css/desk.css'
+import "./css/cssModule"
 // continue()
 import XJungle from './App';
 //import reportWebVitals from './reportWebVitals';
