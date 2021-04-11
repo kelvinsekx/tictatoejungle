@@ -5,7 +5,7 @@ export default function Foooter() {
     <footer>
       <p>
         Xjungle would appreciate any suggestion. Forward to the author{" "}
-        <a href="https://ww.kelvinsekx/codes">kelvinsekx</a>
+        <a href="https://www.kelvinsekx.codes">kelvinsekx</a>
       </p>
       <div>
         <strong>About XJungle :</strong> This is an interesting game very
