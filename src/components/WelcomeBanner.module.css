@@ -6,6 +6,7 @@
 .body>.main{
     width: 70vw;
     margin: 0 auto;
+    gap: 1em;
 }
 .p{
     font-size: 1.3em;
@@ -24,9 +25,20 @@
     padding: 1em 0px;
     cursor: pointer;
 }
+.frame{
+    width: 45rem;
+    height: 20rem;
+}
 
-@media screen and (max-width: 899px) {
+@media (max-width: 899px) {
     .main{
-        width: 100vw;
+        width: 80vw;
+    }
+    .flexDiv{
+        width: 90vw;
+    }
+    .frame{
+        width: 18rem;
+        height: 15rem;
     }
 }
