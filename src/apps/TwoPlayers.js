@@ -1,4 +1,4 @@
-import GameBox from "../utils/compDatahocx";
+import GameBox from "../utils/compDatahocx"
 
 const TellAboutTwoplayer = ({preWinner})=>
 <h2 style={{ fontSize: "66%" }}>

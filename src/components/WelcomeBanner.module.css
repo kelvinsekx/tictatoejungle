@@ -1,0 +1,32 @@
+.body{
+    background-color: rgba(70, 24, 33, 0.7);
+    min-height: 99vh;
+    color: white;
+}
+.body>.main{
+    width: 70vw;
+    margin: 0 auto;
+}
+.p{
+    font-size: 1.3em;
+}
+.flexDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.button{
+    width: 15rem;
+    border: 2px solid blue;
+    color: blue;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 1em 0px;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 899px) {
+    .main{
+        width: 100vw;
+    }
+}
