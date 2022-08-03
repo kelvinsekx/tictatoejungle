@@ -1,50 +1,47 @@
-import React from "react";
-import { cheat as cheated } from "./func";
+import React from 'react';
+import { cheat as cheated } from './func';
 
-export default function XBoard ({handleClick, boox, highlight}) {
-  //console.log(state, handleClick)
+export default function XBoard({ handleClick, boox, highlight }) {
   return (
     <div id="xBoard">
-          <div className="flex">
-            {
-              [0,1,2].map(each => <Box
-                key = {each}
-                v={boox[each].vl}
-                onClick= {() => handleClick(each)}
-                className={highlight[each] ? "highlight" : ""}
-                id = {boox[each].isPT ? 'mrk' : null}
-              />)
-            }
-          </div>
-          <BoxTriangle1 />
-          <div className="flex fcv">
-          {
-              [3,4,5].map(each => <Box
-                key = {each}
-                v={boox[each].vl}
-                onClick={() => handleClick(each)}
-                className={highlight[each] ? "highlight" : ""}
-                id = {boox[each].isPT ? 'mrk' : null}
-              />)
-            }
-          </div>
-          <BoxTriangle2 />
-          <div className="flex">
-          {
-              [6,7,8].map(each => <Box
-                key = {each}
-                v={boox[each].vl}
-                onClick={() => handleClick(each)}
-                className={highlight[each] ? "highlight" : ""}
-                id = {boox[each].isPT ? 'mrk' : null}
-              />)
-            }
-          </div>
-        </div>
-  )
+      <div className="flex">
+        {[0, 1, 2].map((each) => (
+          <Box
+            key={each}
+            v={boox[each].vl}
+            onClick={() => handleClick(each)}
+            className={highlight[each] ? 'highlight' : ''}
+            id={boox[each].isPT ? 'mrk' : null}
+          />
+        ))}
+      </div>
+      <BoxTriangle1 />
+      <div className="flex fcv">
+        {[3, 4, 5].map((each) => (
+          <Box
+            key={each}
+            v={boox[each].vl}
+            onClick={() => handleClick(each)}
+            className={highlight[each] ? 'highlight' : ''}
+            id={boox[each].isPT ? 'mrk' : null}
+          />
+        ))}
+      </div>
+      <BoxTriangle2 />
+      <div className="flex">
+        {[6, 7, 8].map((each) => (
+          <Box
+            key={each}
+            v={boox[each].vl}
+            onClick={() => handleClick(each)}
+            className={highlight[each] ? 'highlight' : ''}
+            id={boox[each].isPT ? 'mrk' : null}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }
-
-
 
 function Pronounce({ children, styles, id }) {
   return (
@@ -64,33 +61,43 @@ function Cheated({ children }) {
 
 export function DecideWhatNext(states, player) {
   // console.log(states)
-  const { winner, wrongMove, whoIsNext, cheat, isWinner, preWinner } = states;
+  const { winner, wrongMove, whoIsNext, cheat, isWinner, preWinner } =
+    states;
   return wrongMove ? (
-    <Pronounce id="pr-kr"> Kharrma, this is an impossible movement</Pronounce>
+    <Pronounce id="pr-kr">
+      {' '}
+      Kharrma, this is an impossible movement
+    </Pronounce>
   ) : winner ? (
     <Winner>
-      {
-      player === 'TwoPlayers' ? 
-      (preWinner === isWinner ? 
-      <div>sekx predicted well</div> : 
-      <div>you proved sekx wrong. congrats</div>) : ''
-    }
-      <strong> 
-        {'\u{1F947}'} {whoIsNext ? "X" : "Y"}!! oshabloblo..you won {'\u{1F3C6}'}
+      {player === 'TwoPlayers' ? (
+        preWinner === isWinner ? (
+          <div>sekx predicted well</div>
+        ) : (
+          <div>you proved sekx wrong. congrats</div>
+        )
+      ) : (
+        ''
+      )}
+      <strong>
+        {'\u{1F947}'} {whoIsNext ? 'X' : 'Y'}!! oshabloblo..you won{' '}
+        {'\u{1F3C6}'}
       </strong>
     </Winner>
   ) : whoIsNext ? (
     <div>
-      <Pronounce styles={{ backgroundColor: "yellow", color: "#000" }}>
+      <Pronounce
+        styles={{ backgroundColor: 'yellow', color: '#000' }}
+      >
         Y, you are next
       </Pronounce>
 
-      {cheat ? <Cheated> X {cheated()}</Cheated> : ""}
+      {cheat ? <Cheated> X {cheated()}</Cheated> : ''}
     </div>
   ) : (
     <div>
-      <Pronounce styles={{ backgroundColor: "green", color: "#fff" }}>
-        X, you are Next{" "}
+      <Pronounce styles={{ backgroundColor: 'green', color: '#fff' }}>
+        X, you are Next{' '}
       </Pronounce>
 
       {cheat ? <Cheated> Y {cheated()}</Cheated> : null}
@@ -116,15 +123,10 @@ export function BoxTriangle2() {
   );
 }
 
-export function Box({className, onClick, id, v}) {
+export function Box({ className, onClick, id, v }) {
   return (
-    <button
-      className={`box ${className}`}
-      onClick={onClick}
-      id={id}
-    >
+    <button className={`box ${className}`} onClick={onClick} id={id}>
       {v}
     </button>
   );
 }
-
