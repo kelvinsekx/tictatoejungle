@@ -1,29 +1,32 @@
-import React from "react";
-import { possibleMovements, winningPosition } from "../utils/util";
+import React from 'react';
+import { possibleMovements, winningPosition } from '../utils/util';
 import {
   checkItIncludes,
   checkWinnerExist,
   predictedWinner,
-  mutatePossibleMvt
-} from "../utils/func";
-import { default as XBOARD, DecideWhatNext } from "../utils/reactiUtil";
-import { findPossibleMoveable } from "../utils/robotHelper";
+  mutatePossibleMvt,
+} from '../utils/func';
+import {
+  default as XBOARD,
+  DecideWhatNext,
+} from '../utils/reactiUtil';
+import { findPossibleMoveable } from '../utils/robotHelper';
 
 const composedHigherHOCX = (ChildComposedComponent, player) =>
-  class TwoPlayers extends React.Component {
+  class Player extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
         boox: [
-          { vl: "y", isPT: false },
-          { vl: "y", isPT: false },
-          { vl: "y", isPT: false },
+          { vl: 'y', isPT: false },
+          { vl: 'y', isPT: false },
+          { vl: 'y', isPT: false },
           { vl: null, isPT: false },
           { vl: null, isPT: false },
           { vl: null, isPT: false },
-          { vl: "x", isPT: false },
-          { vl: "x", isPT: false },
-          { vl: "x", isPT: false },
+          { vl: 'x', isPT: false },
+          { vl: 'x', isPT: false },
+          { vl: 'x', isPT: false },
         ],
         highlight: Array(9).fill(null),
         spaceX: null,
@@ -32,7 +35,7 @@ const composedHigherHOCX = (ChildComposedComponent, player) =>
         wrongMove: false,
         cheat: false,
         preWinner: predictedWinner(),
-        isWinner: "",
+        isWinner: '',
       };
       this.handleClick = this.handleClick.bind(this);
       this.restart = this.restart.bind(this);
@@ -77,7 +80,12 @@ const composedHigherHOCX = (ChildComposedComponent, player) =>
           // console.log("dont continue")
           return;
         }
-        if (checkItIncludes(possibleMovements, [this.state.spaceX[0], index])) {
+        if (
+          checkItIncludes(possibleMovements, [
+            this.state.spaceX[0],
+            index,
+          ])
+        ) {
           //
           // if spaceX works not fine
           makeFormerBoox[index].vl = this.state.spaceX[1];
@@ -88,10 +96,13 @@ const composedHigherHOCX = (ChildComposedComponent, player) =>
           // check if winner exist
           // if it does tell me
           if (checkWinnerExist(winningPosition, makeFormerBoox)) {
-            let newBoox = checkWinnerExist(winningPosition, makeFormerBoox);
+            let newBoox = checkWinnerExist(
+              winningPosition,
+              makeFormerBoox,
+            );
             checkWinner = true;
             // console.log(newBoox)
-            isWinner = this.state.whoIsNext ? "y" : "x";
+            isWinner = this.state.whoIsNext ? 'y' : 'x';
             console.log(isWinner);
             makeFormerBoox = newBoox;
             //makeFormerBoox[index].
@@ -104,11 +115,12 @@ const composedHigherHOCX = (ChildComposedComponent, player) =>
             cheat: false,
             isWinner: isWinner,
           });
-          if (player === "OnePlayer"){
+          if (player === 'OnePlayer') {
             setTimeout(
-                () => this.NEXTPLAYER(this.state.whoIsNext, makeFormerBoox),
-                1450
-              );
+              () =>
+                this.NEXTPLAYER(this.state.whoIsNext, makeFormerBoox),
+              1450,
+            );
           }
         } else {
           return this.setState({
@@ -118,18 +130,16 @@ const composedHigherHOCX = (ChildComposedComponent, player) =>
       } else {
         // do this when BOX is not empty
         let formerValue = this.state.boox[index].vl;
-        // console.log(formerValue)
         if (this.state.whoIsNext) {
-          if (formerValue !== "y") {
+          if (formerValue !== 'y') {
             this.setState({
               spaceX: null,
               cheat: true,
             });
-            // console.log('wrong naaa')
             return;
           }
         } else {
-          if (formerValue !== "x") {
+          if (formerValue !== 'x') {
             this.setState({
               spaceX: null,
               cheat: true,
@@ -152,15 +162,15 @@ const composedHigherHOCX = (ChildComposedComponent, player) =>
     restart = () => {
       return this.setState({
         boox: [
-          { vl: "y", isPT: false },
-          { vl: "y", isPT: false },
-          { vl: "y", isPT: false },
+          { vl: 'y', isPT: false },
+          { vl: 'y', isPT: false },
+          { vl: 'y', isPT: false },
           { vl: null, isPT: false },
           { vl: null, isPT: false },
           { vl: null, isPT: false },
-          { vl: "x", isPT: false },
-          { vl: "x", isPT: false },
-          { vl: "x", isPT: false },
+          { vl: 'x', isPT: false },
+          { vl: 'x', isPT: false },
+          { vl: 'x', isPT: false },
         ],
         highlight: Array(9).fill(null),
         spaceX: null,
@@ -168,7 +178,7 @@ const composedHigherHOCX = (ChildComposedComponent, player) =>
         winner: false,
         wrongMove: false,
         cheat: false,
-        isWinner: "",
+        isWinner: '',
       });
     };
     render() {
@@ -179,7 +189,7 @@ const composedHigherHOCX = (ChildComposedComponent, player) =>
             RESTART GAME
           </button>
           <div>
-            <ChildComposedComponent  {...this.state} />
+            <ChildComposedComponent {...this.state} />
             {status}
           </div>
           <XBOARD {...this.state} handleClick={this.handleClick} />

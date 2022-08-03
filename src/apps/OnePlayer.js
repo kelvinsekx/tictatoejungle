@@ -1,11 +1,11 @@
-import GameBox from "../utils/compDatahocx";
+import GameBox from '../utils/compDatahocx';
 
 const TellAboutOneplayer = () => (
-  <h2 style={{ fontSize: "66%" }}>
+  <h2 style={{ fontSize: '66%' }}>
     XJungler...now you're playing against sekx
   </h2>
 );
 
-const TwoPlayers = GameBox(TellAboutOneplayer, "OnePlayer");
+const OnePlayer = GameBox(TellAboutOneplayer, 'OnePlayer');
 
-export default TwoPlayers;
+export default OnePlayer;
