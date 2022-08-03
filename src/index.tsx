@@ -1,9 +1,8 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import "./css/cssModule"
-// continue()
+
 import XJungle from './App';
-//import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
