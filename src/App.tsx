@@ -4,8 +4,11 @@ import OnePlayer from './apps/OnePlayer';
 
 import Footer from './components/footer';
 import WelcomeBanner from './components/WelcomeBanner';
+import { XjungleContext } from './utils/context';
 
 import styles from './components/App.module.css';
+import Aside from './components/Aside.js';
+import { FaUserCog } from 'react-icons/fa';
 import { setFirstTimerToFalse, ifFirstTimer } from './utils/func';
 
 enum PLAYER {
@@ -44,6 +47,8 @@ const reducer = (state: Tstate, action: { type: string }): Tstate => {
 function XJungle() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [firstTimer, setFirstTimer] = useState(ifFirstTimer);
+  const [isVisible, setIsVisible] = useState(false);
+  const { setUsername } = React.useContext(XjungleContext);
 
   const XJungle =
     state.player === PLAYER.ONEPLAYER ? (
@@ -56,6 +61,11 @@ function XJungle() {
     `${styles.btn} ${
       state.active === player ? 'navBtn purple' : 'navBtn'
     }`;
+
+  const submitUsername = (username: string): void => {
+    setUsername(username);
+    localStorage.setItem('username', username);
+  };
 
   return (
     <div>
@@ -81,7 +91,18 @@ function XJungle() {
                 ? 'on two players'
                 : 'twoPlayers'}
             </button>
+            <div>
+              <FaUserCog
+                size={'24px'}
+                onClick={() => setIsVisible(!isVisible)}
+              />
+            </div>
+            <Aside
+              isVisible={isVisible}
+              submitUsername={submitUsername}
+            />
           </nav>
+
           <main>
             {/**the div with className ad-1 & ad-2 are for styling purposes */}
             <div className="ad-1" />

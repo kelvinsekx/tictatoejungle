@@ -1,14 +1,23 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import "./css/cssModule"
+import './css/cssModule';
 
 import XJungle from './App';
+import { XjungleContext as Context } from './utils/context';
 
+function Game() {
+  const [username, setUsername] = React.useState('');
+  return (
+    <Context.Provider value={{ username, setUsername }}>
+      <XJungle />
+    </Context.Provider>
+  );
+}
 ReactDOM.render(
   <React.StrictMode>
-    <XJungle />
+    <Game />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function
