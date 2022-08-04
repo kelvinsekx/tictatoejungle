@@ -12,21 +12,23 @@ import {
 } from '../utils/reactiUtil';
 import { findPossibleMoveable } from '../utils/robotHelper';
 
+import { XjungleContext } from './context';
+
 const composedHigherHOCX = (ChildComposedComponent, player) =>
   class Player extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        boox: [
-          { vl: 'y', isPT: false },
-          { vl: 'y', isPT: false },
-          { vl: 'y', isPT: false },
-          { vl: null, isPT: false },
-          { vl: null, isPT: false },
-          { vl: null, isPT: false },
-          { vl: 'x', isPT: false },
-          { vl: 'x', isPT: false },
-          { vl: 'x', isPT: false },
+        board: [
+          { value: 'y', isPT: false },
+          { value: 'y', isPT: false },
+          { value: 'y', isPT: false },
+          { value: null, isPT: false },
+          { value: null, isPT: false },
+          { value: null, isPT: false },
+          { value: 'x', isPT: false },
+          { value: 'x', isPT: false },
+          { value: 'x', isPT: false },
         ],
         highlight: Array(9).fill(null),
         spaceX: null,
@@ -36,48 +38,58 @@ const composedHigherHOCX = (ChildComposedComponent, player) =>
         cheat: false,
         preWinner: predictedWinner(),
         isWinner: '',
+        username: '',
       };
-      this.handleClick = this.handleClick.bind(this);
-      this.restart = this.restart.bind(this);
+    }
+    static contextType = XjungleContext.Consumer;
+
+    componentDidMount() {
+      const username = localStorage.getItem('username');
+      this.setState({
+        ...this.state,
+        username: username ? username : this.context.username,
+      });
+    }
+
+    componentDidUpdate(_, prevState) {
+      if (prevState.username) return;
+      if (prevState.username !== this.context.username) {
+        this.setState({
+          ...this.state,
+          username: this.context.username,
+        });
+      }
     }
 
     NEXTPLAYER = (wS, existingMovements) => {
       let checkWinner;
       if (this.state.winner) return;
-      const ext = existingMovements;
-      const fExt = findPossibleMoveable(ext);
-      // console.log(wS);
-      let mvt = mutatePossibleMvt(ext, fExt);
-      // check if winner exist
-      // if it does tell me
-      if (checkWinnerExist(winningPosition, ext)) {
+      const fExt = findPossibleMoveable(existingMovements);
+
+      let mvt = mutatePossibleMvt(existingMovements, fExt);
+      if (checkWinnerExist(winningPosition, existingMovements)) {
         checkWinner = true;
       }
       return this.setState({
-        boox: mvt,
+        board: mvt,
         winner: checkWinner,
         whoIsNext: !wS,
       });
     };
 
-    handleClick(index) {
-      // console.log(this.state.spaceX);
-      //Algo-1: checkWinner
+    handleClick = (index) => {
       let checkWinner;
       let isWinner;
       if (this.state.winner) {
         return;
       }
-      // Algo1: Highlight each BOX
+
       let copyHighlight = Array(9).fill(null);
       copyHighlight[index] = true;
-      // Algo2:
-      let makeFormerBoox = this.state.boox.slice();
+      let makeFormerBoox = this.state.board.slice();
 
-      // when box isnot empty, do this
-      if (this.state.boox[index].vl == null) {
+      if (this.state.board[index].value == null) {
         if (this.state.spaceX == null) {
-          // console.log("dont continue")
           return;
         }
         if (
@@ -86,29 +98,24 @@ const composedHigherHOCX = (ChildComposedComponent, player) =>
             index,
           ])
         ) {
-          //
-          // if spaceX works not fine
-          makeFormerBoox[index].vl = this.state.spaceX[1];
-          makeFormerBoox[this.state.spaceX[0]].vl = null;
+          makeFormerBoox[index].value = this.state.spaceX[1];
+          makeFormerBoox[this.state.spaceX[0]].value = null;
           this.setState({
             spaceX: [null, null],
           });
-          // check if winner exist
-          // if it does tell me
           if (checkWinnerExist(winningPosition, makeFormerBoox)) {
             let newBoox = checkWinnerExist(
               winningPosition,
               makeFormerBoox,
             );
             checkWinner = true;
-            // console.log(newBoox)
+
             isWinner = this.state.whoIsNext ? 'y' : 'x';
             console.log(isWinner);
             makeFormerBoox = newBoox;
-            //makeFormerBoox[index].
           }
           this.setState({
-            boox: makeFormerBoox,
+            board: makeFormerBoox,
             whoIsNext: !this.state.whoIsNext,
             winner: checkWinner,
             wrongMove: false,
@@ -128,8 +135,7 @@ const composedHigherHOCX = (ChildComposedComponent, player) =>
           });
         }
       } else {
-        // do this when BOX is not empty
-        let formerValue = this.state.boox[index].vl;
+        let formerValue = this.state.board[index].value;
         if (this.state.whoIsNext) {
           if (formerValue !== 'y') {
             this.setState({
@@ -144,33 +150,32 @@ const composedHigherHOCX = (ChildComposedComponent, player) =>
               spaceX: null,
               cheat: true,
             });
-            // console.log('wrong naaa joor')
             return;
           }
         }
-        //console.log(this.state.spaceX)
         return this.setState({
-          boox: makeFormerBoox,
+          board: makeFormerBoox,
           highlight: copyHighlight,
           spaceX: [index, formerValue],
           wrongMove: false,
           cheat: false,
         });
       }
-    }
+    };
 
     restart = () => {
       return this.setState({
-        boox: [
-          { vl: 'y', isPT: false },
-          { vl: 'y', isPT: false },
-          { vl: 'y', isPT: false },
-          { vl: null, isPT: false },
-          { vl: null, isPT: false },
-          { vl: null, isPT: false },
-          { vl: 'x', isPT: false },
-          { vl: 'x', isPT: false },
-          { vl: 'x', isPT: false },
+        ...this.state,
+        board: [
+          { value: 'y', isPT: false },
+          { value: 'y', isPT: false },
+          { value: 'y', isPT: false },
+          { value: null, isPT: false },
+          { value: null, isPT: false },
+          { value: null, isPT: false },
+          { value: 'x', isPT: false },
+          { value: 'x', isPT: false },
+          { value: 'x', isPT: false },
         ],
         highlight: Array(9).fill(null),
         spaceX: null,
@@ -189,7 +194,9 @@ const composedHigherHOCX = (ChildComposedComponent, player) =>
             RESTART GAME
           </button>
           <div>
-            <ChildComposedComponent {...this.state} />
+            <ChildComposedComponent
+              preWinner={this.state.preWinner}
+            />
             {status}
           </div>
           <XBOARD {...this.state} handleClick={this.handleClick} />
@@ -198,4 +205,5 @@ const composedHigherHOCX = (ChildComposedComponent, player) =>
     }
   };
 
+composedHigherHOCX().contextType = XjungleContext;
 export default composedHigherHOCX;

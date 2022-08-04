@@ -1,3 +1,7 @@
+*{
+  box-sizing: border-box;
+}
+
 body{
   /* this are my awesome selected color */
   --rightside-background-color : rgba(155, 112, 112, 0.88);
@@ -95,6 +99,7 @@ padding: 2rem 6rem;
 nav{
   display:flex;
   justify-content: space-around;
+  align-items: center;
 }
 .recol-container{
   display: flex;

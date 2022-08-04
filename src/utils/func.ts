@@ -12,14 +12,13 @@ export function checkItIncludes(arr: any[], ex: any[]) {
 export function checkWinnerExist(arr: any[], filter: any[]) {
   for (let each of arr) {
     if (
-      filter[each[0]].vl &&
-      filter[each[0]].vl === filter[each[1]].vl &&
-      filter[each[1]].vl === filter[each[2]].vl
+      filter[each[0]].value &&
+      filter[each[0]].value === filter[each[1]].value &&
+      filter[each[1]].value === filter[each[2]].value
     ) {
       filter[each[0]].isPT = true;
       filter[each[1]].isPT = true;
       filter[each[2]].isPT = true;
-      // console.log(filter)
       return filter;
     }
   }
@@ -28,8 +27,8 @@ export function checkWinnerExist(arr: any[], filter: any[]) {
 
 export function mutatePossibleMvt(ext: any[], mutant:any[]) {
   let newExt = ext.slice();
-  newExt[mutant[0]].vl = null;
-  newExt[mutant[1]].vl = 'x';
+  newExt[mutant[0]].value = null;
+  newExt[mutant[1]].value = 'x';
   return newExt;
 }
 
