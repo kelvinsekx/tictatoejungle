@@ -1,6 +1,12 @@
-# Getting Started with Create React App
+# PlayXYjungle Naija Game
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and authored solely by [kelvinsekx](https://twitter.com/kelvinsekx).
+
+The game is a very popular one among Nigerians and was common among kids in the early 2000s.
+There is a short video on how to play it on the [home page](https://playxjungle.netlify.app/)
+
+## Stacks to hack this code
+The game is a pretty simple web app built with HTML, CSS, TYPESCRIPT, JAVASCRIPT AND REACT. 
 
 ## Available Scripts
 
