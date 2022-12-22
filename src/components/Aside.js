@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 export default function Aside({ isVisible, submitUsername }) {
-  const [v, sV] = useState('');
+  const [v, sV] = useState('')
   return (
     <>
       <div
@@ -26,11 +26,9 @@ export default function Aside({ isVisible, submitUsername }) {
             onChange={(e) => sV(e.target.value)}
             style={{ width: '100%', boxSizing: 'border-box' }}
           />
-          <button onClick={() => submitUsername(v)}>
-            set username
-          </button>
+          <button onClick={() => submitUsername(v)}>set username</button>
         </div>
       </div>
     </>
-  );
+  )
 }

@@ -1,5 +1,5 @@
-import React from 'react';
-import { cheat as cheated } from './func';
+import React from 'react'
+import { cheat as cheated } from './func'
 
 export default function XBoard({ handleClick, board, highlight }) {
   return (
@@ -40,7 +40,7 @@ export default function XBoard({ handleClick, board, highlight }) {
         ))}
       </div>
     </div>
-  );
+  )
 }
 
 function Pronounce({ children, styles, id }) {
@@ -48,34 +48,24 @@ function Pronounce({ children, styles, id }) {
     <span style={{ ...styles }} id={id} className="pron">
       {children}
     </span>
-  );
+  )
 }
 
 function Winner({ children }) {
-  return <span className="winner">{children}</span>;
+  return <span className="winner">{children}</span>
 }
 
 function Cheated({ children }) {
-  return <span className="cheated">{children}</span>;
+  return <span className="cheated">{children}</span>
 }
 
 export function DecideWhatNext(states, player) {
-  const {
-    winner,
-    wrongMove,
-    whoIsNext,
-    cheat,
-    isWinner,
-    preWinner,
-    username,
-  } = states;
+  const { winner, wrongMove, whoIsNext, cheat, isWinner, preWinner, username } =
+    states
   if (wrongMove) {
     return (
-      <Pronounce id="pr-kr">
-        {' '}
-        Kharrma, this is an impossible movement
-      </Pronounce>
-    );
+      <Pronounce id="pr-kr"> Kharrma, this is an impossible movement</Pronounce>
+    )
   }
   return winner ? (
     <Winner>
@@ -89,16 +79,13 @@ export function DecideWhatNext(states, player) {
         ''
       )}
       <strong>
-        {'\u{1F947}'}{' '}
-        {whoIsNext ? 'X' : `${username ? username : 'Y'}`}!!
+        {'\u{1F947}'} {whoIsNext ? 'X' : `${username ? username : 'Y'}`}!!
         oshabloblo..you won {'\u{1F3C6}'}
       </strong>
     </Winner>
   ) : whoIsNext ? (
     <div>
-      <Pronounce
-        styles={{ backgroundColor: 'yellow', color: '#000' }}
-      >
+      <Pronounce styles={{ backgroundColor: 'yellow', color: '#000' }}>
         {`${username ? username : 'Y'}, you are next`}
       </Pronounce>
 
@@ -117,7 +104,7 @@ export function DecideWhatNext(states, player) {
         </Cheated>
       ) : null}
     </div>
-  );
+  )
 }
 
 export function BoxTriangle1() {
@@ -126,7 +113,7 @@ export function BoxTriangle1() {
       <div className="recol-11"></div>
       <div className="recol-21"></div>
     </div>
-  );
+  )
 }
 
 export function BoxTriangle2() {
@@ -135,7 +122,7 @@ export function BoxTriangle2() {
       <div className="recol-1"></div>
       <div className="recol-2"></div>
     </div>
-  );
+  )
 }
 
 export function Box({ className, onClick, id, v }) {
@@ -143,5 +130,5 @@ export function Box({ className, onClick, id, v }) {
     <button className={`box ${className}`} onClick={onClick} id={id}>
       {v}
     </button>
-  );
+  )
 }

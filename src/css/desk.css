@@ -1,15 +1,15 @@
-*{
+* {
   box-sizing: border-box;
 }
 
-body{
+body {
   /* this are my awesome selected color */
-  --rightside-background-color : rgba(155, 112, 112, 0.88);
+  --rightside-background-color: rgba(155, 112, 112, 0.88);
   --leftside-background-color: rgba(155, 112, 112, 0.76);
   --color-purple: purple;
-  --color-black: rgba(41, 36, 36, 0.89)
+  --color-black: rgba(41, 36, 36, 0.89);
 }
-.purple{
+.purple {
   background-color: var(--color-purple) !important;
   color: whitesmoke !important;
 }
@@ -27,27 +27,26 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-.ack{
+.ack {
   display: flex;
-   flex-direction: column;
-    width: 80%;
-     margin: 0 auto;
-
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
 }
-.navBtn{
+.navBtn {
   height: 2rem;
   background: transparent;
   color: var(--color-purple);
   border: 1px solid var(--color-purple);
 }
-.navBtn:hover{
+.navBtn:hover {
   height: 2rem;
   background: var(--color-purple);
   color: white;
   border: 1px solid var(--color-purple);
 }
 
-.box{
+.box {
   width: 2.5rem;
   height: 2.5rem;
   font-size: 1.8rem;
@@ -57,7 +56,7 @@ code {
   color: var(--color-purple);
 }
 
-main{
+main {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -65,47 +64,47 @@ main{
   margin: 0 auto;
   /* border: 2px solid red; */
 }
-.junglearea{
+.junglearea {
   position: relative;
   top: -1rem;
 }
-.ad-1{
-padding: 2rem 6rem;
-}
-.ad-2{
+.ad-1 {
   padding: 2rem 6rem;
-  }
+}
+.ad-2 {
+  padding: 2rem 6rem;
+}
 
-#mrk{
+#mrk {
   background-color: rgb(236, 130, 130);
-  color:rgba(199, 15, 15, 1);
+  color: rgba(199, 15, 15, 1);
   font-weight: 600;
   border: 2px solid rgba(199, 15, 15, 1);
 }
 
-.winner{
- color:rgb(45, 168, 7);
- font-size: 110%;
+.winner {
+  color: rgb(45, 168, 7);
+  font-size: 110%;
 }
 
-.restart{
+.restart {
   background-color: rgb(66, 66, 197);
   color: white;
-  border:none;
+  border: none;
   border-radius: 5px;
-  padding-top:0.1rem;
-  padding-bottom:0.1rem;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
 }
-nav{
-  display:flex;
+nav {
+  display: flex;
   justify-content: space-around;
   align-items: center;
 }
-.recol-container{
+.recol-container {
   display: flex;
 }
 
-.bred{
+.bred {
   display: absolute;
   border-left: 5px solid #000;
   height: 158%;
@@ -114,127 +113,130 @@ nav{
   background-color: yellow;
   transform-origin: top;
   transform: translateY(72px) translateX(170px) rotate(50deg);
-  z-index:-100;   
+  z-index: -100;
 }
-.recol-11{
-  width:14.5rem;
-  height:10.2rem;
+.recol-11 {
+  width: 14.5rem;
+  height: 10.2rem;
   background-color: var(--leftside-background-color);
   z-index: 100;
   border: 2px solid var(--color-black);
-  border-bottom: none; 
-  }
-.recol-2{
-  width:14.5rem;
-  height:10.2rem;
-  background-color: var(--rightside-background-color);
-  z-index: 1; 
-  border: 2px solid var(--color-black); 
-  border-bottom: none; 
+  border-bottom: none;
 }
-.recol-1{
-  width:14.5rem;
-  height:10.2rem;
+.recol-2 {
+  width: 14.5rem;
+  height: 10.2rem;
+  background-color: var(--rightside-background-color);
+  z-index: 1;
+  border: 2px solid var(--color-black);
+  border-bottom: none;
+}
+.recol-1 {
+  width: 14.5rem;
+  height: 10.2rem;
   background-color: var(--leftside-background-color);
   border: 2px solid var(--color-black);
-  border-bottom: none; 
-  }
-.recol-21{
-  width:14.5rem;
-  height:10.2rem;
-  background-color: var(--rightside-background-color); 
-  z-index: 1000; 
+  border-bottom: none;
+}
+.recol-21 {
+  width: 14.5rem;
+  height: 10.2rem;
+  background-color: var(--rightside-background-color);
+  z-index: 1000;
   border: 2px solid var(--color-black);
-  border-bottom: none;  
+  border-bottom: none;
 }
 
-.recol-21:before{
+.recol-21:before {
   content: '';
   display: block;
-  border-left:3px solid var(--color-black);
+  border-left: 3px solid var(--color-black);
   height: 153%;
-  width:1px;
+  width: 1px;
   background-color: none;
   transform-origin: top;
   transform: translateY(-2px) translateX(199px) rotate(48deg);
 }
-.recol-1:before{
+.recol-1:before {
   content: '';
   display: block;
   border-left: 3px solid var(--color-black);
   height: 152%;
-  width:1px;
+  width: 1px;
   background-color: none;
   transform-origin: top;
   transform: translateY(-3px) translateX(184px) rotate(48deg);
-  z-index:-1000;
+  z-index: -1000;
 }
 
-.recol-11:before{
+.recol-11:before {
   content: '';
   display: block;
   border-left: 3px solid var(--color-black);
   height: 150%;
-  width:0px;
+  width: 0px;
   background-color: none;
   transform-origin: top;
-  transform: translateY(-1px) translateX(1px) rotate(-47deg);  
-  z-index:-100; 
+  transform: translateY(-1px) translateX(1px) rotate(-47deg);
+  z-index: -100;
 }
-.recol-2:before{
+.recol-2:before {
   content: '';
   display: block;
   border-left: 3px solid var(--color-black);
   height: 152%;
-  width:1px;
+  width: 1px;
   background-color: none;
   transform-origin: top;
-  transform: translateY(-1px) translateX(14px) rotate(-47deg);  
-  z-index:-100; 
+  transform: translateY(-1px) translateX(14px) rotate(-47deg);
+  z-index: -100;
 }
-#xBoard{
+#xBoard {
   /* border: 1px solid #444; */
   width: 25rem;
   height: 25rem;
   margin-top: 2rem;
 }
-.flex{
-  display:flex;
+.flex {
+  display: flex;
   align-items: center;
   justify-content: space-between;
   /* border: 1px solid red; */
 }
-.fcv{
+.fcv {
   background: var(--leftside-background-color);
- z-index: -1;
- background-image:linear-gradient(to right, transparent 50%, var(--rightside-background-color) 0);
+  z-index: -1;
+  background-image: linear-gradient(
+    to right,
+    transparent 50%,
+    var(--rightside-background-color) 0
+  );
 }
 
 .highlight {
   background-color: rgb(31, 243, 243, 0.34);
 }
 
-footer{
+footer {
   text-align: center;
   margin-top: 8rem;
   margin-bottom: 1rem;
 }
 
-.cheated{
+.cheated {
   background-color: yellowgreen;
   color: rgb(186, 9, 9);
   font-size: 101%;
   position: relative;
 }
 
-.stud>strong{
+.stud > strong {
   color: #444;
 }
 
-
-.pron{
-    font-size: 112%;
-    font-weight: bolder;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    color: rgba(245, 41, 41, 0.8);
-  }
+.pron {
+  font-size: 112%;
+  font-weight: bolder;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: rgba(245, 41, 41, 0.8);
+}

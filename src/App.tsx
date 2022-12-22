@@ -1,119 +1,74 @@
-import React, { useState, useReducer } from 'react';
-import TwoPlayers from './apps/TwoPlayers';
-import OnePlayer from './apps/OnePlayer';
+import React, { useState, useReducer } from 'react'
+import TwoPlayers from './apps/TwoPlayers'
+import OnePlayer from './apps/OnePlayer'
 
-import Footer from './components/footer';
-import WelcomeBanner from './components/WelcomeBanner';
-import { XjungleContext } from './utils/context';
+import { XjungleContext } from './utils/context'
+import { FaUserCog } from 'react-icons/fa'
 
-import styles from './components/App.module.css';
-import Aside from './components/Aside.js';
-import { FaUserCog } from 'react-icons/fa';
-import { setFirstTimerToFalse, ifFirstTimer } from './utils/func';
+import Footer from './components/footer'
+import WelcomeBanner from './components/WelcomeBanner'
+import Aside from './components/Aside.js'
+import PlayerToggleBtn from './components/PlayerToggleBtn/playtogglebtn'
 
-enum PLAYER {
-  ONEPLAYER = 'onePlayer',
-  TWOPLAYER = 'twoPlayers',
-}
-
-type TActive = 'one' | 'two';
-
-const initialState = {
-  player: 'onePlayer',
-  active: 'one',
-};
-
-type Tstate = {
-  player: string;
-  active: string;
-};
-const reducer = (state: Tstate, action: { type: string }): Tstate => {
-  switch (action.type) {
-    case 'one':
-      return { ...initialState };
-    case 'two':
-      return {
-        ...state,
-        player: PLAYER.TWOPLAYER,
-        active: 'two',
-      };
-    default:
-      throw new Error(
-        'action type is not known, consider using setToOnePlayer or setToTwoPlayers',
-      );
-  }
-};
+import { setFirstTimerToFalse } from './utils/func'
+import { reducer, initialState, PLAYER } from './utils/reducer'
 
 function XJungle() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const [firstTimer, setFirstTimer] = useState(ifFirstTimer);
-  const [isVisible, setIsVisible] = useState(false);
-  const { setUsername } = React.useContext(XjungleContext);
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const [isVisible, setIsVisible] = useState(false)
+  const { setUsername } = React.useContext(XjungleContext)
 
   const XJungle =
-    state.player === PLAYER.ONEPLAYER ? (
-      <OnePlayer />
-    ) : (
-      <TwoPlayers />
-    );
-
-  const getClassName = (player: TActive): string =>
-    `${styles.btn} ${
-      state.active === player ? 'navBtn purple' : 'navBtn'
-    }`;
+    state.player === PLAYER.ONEPLAYER ? <OnePlayer /> : <TwoPlayers />
 
   const submitUsername = (username: string): void => {
-    setUsername(username);
-    localStorage.setItem('username', username);
-  };
+    setUsername(username)
+    localStorage.setItem('username', username)
+  }
+
+  if (state.isFirstTimer) {
+    return (
+      <WelcomeBanner
+        close={() => {
+          setFirstTimerToFalse(() => dispatch({ type: 'toggleFistTimer' }))
+        }}
+      />
+    )
+  }
 
   return (
     <div>
-      {firstTimer ? (
-        <WelcomeBanner
-          close={() => setFirstTimerToFalse(setFirstTimer)}
-        />
-      ) : (
-        <div>
-          <nav>
-            <h2>XJungle</h2>
-            <button
-              className={getClassName('one')}
-              onClick={() => dispatch({ type: 'one' })}
-            >
-              {state.active === 'one' ? 'on one player' : 'onePlayer'}
-            </button>
-            <button
-              className={getClassName('two')}
-              onClick={() => dispatch({ type: 'two' })}
-            >
-              {state.active === 'two'
-                ? 'on two players'
-                : 'twoPlayers'}
-            </button>
-            <div>
-              <FaUserCog
-                size={'24px'}
-                onClick={() => setIsVisible(!isVisible)}
-              />
-            </div>
-            <Aside
-              isVisible={isVisible}
-              submitUsername={submitUsername}
-            />
-          </nav>
+      <div>
+        <nav>
+          <h2>XJungle</h2>
+          <PlayerToggleBtn
+            pFor={'one'}
+            active={state.active === 'one'}
+            handleClick={() => dispatch({ type: 'one' })}
+          />
 
-          <main>
-            {/**the div with className ad-1 & ad-2 are for styling purposes */}
-            <div className="ad-1" />
-            <div className="junglearea">{XJungle}</div>
-            <div className="ad-2" />
-          </main>
-          <Footer />
-        </div>
-      )}
+          <PlayerToggleBtn
+            pFor={'two'}
+            active={state.active === 'two'}
+            handleClick={() => dispatch({ type: 'two' })}
+          />
+
+          <div>
+            <FaUserCog size={'24px'} onClick={() => setIsVisible(!isVisible)} />
+          </div>
+          <Aside isVisible={isVisible} submitUsername={submitUsername} />
+        </nav>
+
+        <main>
+          {/**the div with className ad-1 & ad-2 are for styling purposes */}
+          <div className="ad-1" />
+          <div className="junglearea">{XJungle}</div>
+          <div className="ad-2" />
+        </main>
+        <Footer />
+      </div>
     </div>
-  );
+  )
 }
 
-export default XJungle;
+export default XJungle

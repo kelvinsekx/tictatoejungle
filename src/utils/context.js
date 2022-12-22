@@ -1,2 +1,2 @@
-import { createContext } from 'react';
-export const XjungleContext = createContext();
+import { createContext } from 'react'
+export const XjungleContext = createContext()

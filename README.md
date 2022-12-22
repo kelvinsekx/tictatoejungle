@@ -6,7 +6,8 @@ The game is a very popular one among Nigerians and was common among kids in the 
 There is a short video on how to play it on the [home page](https://playxjungle.netlify.app/)
 
 ## Stacks to hack this code
-The game is a pretty simple web app built with HTML, CSS, TYPESCRIPT, JAVASCRIPT AND REACT. 
+
+The game is a pretty simple web app built with HTML, CSS, TYPESCRIPT, JAVASCRIPT AND REACT.
 
 ## Available Scripts
 
@@ -74,4 +75,5 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
 # tictatoejungle
