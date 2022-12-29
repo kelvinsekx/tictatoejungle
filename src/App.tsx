@@ -11,7 +11,8 @@ import Aside from './components/Aside.js'
 import PlayerToggleBtn from './components/PlayerToggleBtn/playtogglebtn'
 
 import { setFirstTimerToFalse } from './utils/func'
-import { reducer, initialState, PLAYER } from './utils/reducer'
+import { reducer, initialState } from './utils/reducer'
+import { PLAYER } from './utils/types'
 
 function XJungle() {
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -19,7 +20,7 @@ function XJungle() {
   const { setUsername } = React.useContext(XjungleContext)
 
   const XJungle =
-    state.player === PLAYER.ONEPLAYER ? <OnePlayer /> : <TwoPlayers />
+    state.active === PLAYER.ONEPLAYER ? <OnePlayer /> : <TwoPlayers />
 
   const submitUsername = (username: string): void => {
     setUsername(username)

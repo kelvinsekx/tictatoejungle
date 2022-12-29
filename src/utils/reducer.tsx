@@ -1,18 +1,8 @@
 import { isFirstTimer } from './func'
-type Tstate = {
-  player: string
-  active: string
-  isFirstTimer: boolean
-}
-
-export enum PLAYER {
-  ONEPLAYER = 'onePlayer',
-  TWOPLAYER = 'twoPlayers',
-}
+import { PLAYER, Tstate } from './types'
 
 export const initialState = {
-  player: 'onePlayer',
-  active: 'one',
+  active: PLAYER.ONEPLAYER,
   isFirstTimer,
 }
 
@@ -23,8 +13,7 @@ export const reducer = (state: Tstate, action: { type: string }): Tstate => {
     case 'two':
       return {
         ...state,
-        player: PLAYER.TWOPLAYER,
-        active: 'two',
+        active: PLAYER.TWOPLAYER,
       }
     case 'toggleFistTimer':
       return {

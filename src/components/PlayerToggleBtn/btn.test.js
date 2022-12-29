@@ -20,8 +20,8 @@ const txt = [
 
 const random = Math.floor(Math.random() * 2)
 
-describe('my function or component', () => {
-  it('does the following', () => {
+describe('players toggle button', () => {
+  it('changes active state', () => {
     render(<PlayerToggleBtn {...props} />)
     const txtContent = props.active ? txt[random]['false'] : txt[random]['true']
     expect(screen.getByText(txtContent)).toBeInTheDocument()

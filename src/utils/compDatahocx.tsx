@@ -1,42 +1,22 @@
 import React from 'react'
-import { possibleMovements, winningPosition } from '../utils/util'
-import {
-  checkItIncludes,
-  checkWinnerExist,
-  predictedWinner,
-  mutatePossibleMvt,
-} from '../utils/func'
-import { default as XBOARD, DecideWhatNext } from '../utils/reactiUtil'
-import { findPossibleMoveable } from '../utils/robotHelper'
+import { possibleMovements, winningPosition } from './util'
+import { checkItIncludes, checkWinnerExist, mutatePossibleMvt } from './func'
+import { default as XBOARD, DecideWhatNext } from './reactiUtil'
+import { findPossibleMoveable } from './robotHelper'
 
 import { XjungleContext } from './context'
+import { initGameState, PLAYER } from './types'
+import { TellAboutOneplayer } from '../apps/OnePlayer'
+import { TellAboutTwoplayer } from '../apps/TwoPlayers'
 
-const composedHigherHOCX = (ChildComposedComponent, player) =>
+const composedHigherHOCX = (
+  ChildComposedComponent: typeof TellAboutOneplayer | typeof TellAboutTwoplayer,
+  player: PLAYER
+) =>
   class Player extends React.Component {
     constructor(props) {
       super(props)
-      this.state = {
-        board: [
-          { value: 'y', isPT: false },
-          { value: 'y', isPT: false },
-          { value: 'y', isPT: false },
-          { value: null, isPT: false },
-          { value: null, isPT: false },
-          { value: null, isPT: false },
-          { value: 'x', isPT: false },
-          { value: 'x', isPT: false },
-          { value: 'x', isPT: false },
-        ],
-        highlight: Array(9).fill(null),
-        spaceX: null,
-        whoIsNext: true,
-        winner: false,
-        wrongMove: false,
-        cheat: false,
-        preWinner: predictedWinner(),
-        isWinner: '',
-        username: '',
-      }
+      this.state = initGameState
     }
     static contextType = XjungleContext.Consumer
 
@@ -48,7 +28,11 @@ const composedHigherHOCX = (ChildComposedComponent, player) =>
       })
     }
 
-    componentDidUpdate(_, prevState) {
+    componentDidUpdate(
+      _: typeof initGameState,
+      prevState: typeof initGameState
+    ) {
+      // somewaht buggy code *()*
       if (prevState.username) return
       if (prevState.username !== this.context.username) {
         this.setState({
@@ -154,24 +138,7 @@ const composedHigherHOCX = (ChildComposedComponent, player) =>
     restart = () => {
       return this.setState({
         ...this.state,
-        board: [
-          { value: 'y', isPT: false },
-          { value: 'y', isPT: false },
-          { value: 'y', isPT: false },
-          { value: null, isPT: false },
-          { value: null, isPT: false },
-          { value: null, isPT: false },
-          { value: 'x', isPT: false },
-          { value: 'x', isPT: false },
-          { value: 'x', isPT: false },
-        ],
-        highlight: Array(9).fill(null),
-        spaceX: null,
-        whoIsNext: true,
-        winner: false,
-        wrongMove: false,
-        cheat: false,
-        isWinner: '',
+        ...initGameState,
       })
     }
     render() {
