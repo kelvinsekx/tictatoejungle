@@ -1,24 +1,28 @@
-import React from 'react'
+import * as React from 'react'
 import { possibleMovements, winningPosition } from './util'
 import { checkItIncludes, checkWinnerExist, mutatePossibleMvt } from './func'
 import { default as XBOARD, DecideWhatNext } from './reactiUtil'
 import { findPossibleMoveable } from './robotHelper'
 
 import { XjungleContext } from './context'
-import { initGameState, PLAYER } from './types'
+import { initGameState, PLAYER, TInitGameState } from './types'
 import { TellAboutOneplayer } from '../apps/OnePlayer'
 import { TellAboutTwoplayer } from '../apps/TwoPlayers'
+
+interface IProps {}
 
 const composedHigherHOCX = (
   ChildComposedComponent: typeof TellAboutOneplayer | typeof TellAboutTwoplayer,
   player: PLAYER
 ) =>
-  class Player extends React.Component {
-    constructor(props) {
+  class Player extends React.Component<IProps, TInitGameState> {
+    constructor(props: IProps) {
       super(props)
-      this.state = initGameState
+      this.state = {
+        ...initGameState(),
+      }
     }
-    static contextType = XjungleContext.Consumer
+    static contextType = XjungleContext
 
     componentDidMount() {
       const username = localStorage.getItem('username')
@@ -28,11 +32,8 @@ const composedHigherHOCX = (
       })
     }
 
-    componentDidUpdate(
-      _: typeof initGameState,
-      prevState: typeof initGameState
-    ) {
-      // somewaht buggy code *()*
+    componentDidUpdate(_: TInitGameState, prevState: TInitGameState) {
+      // somewhat buggy code *()*
       if (prevState.username) return
       if (prevState.username !== this.context.username) {
         this.setState({
@@ -42,8 +43,8 @@ const composedHigherHOCX = (
       }
     }
 
-    NEXTPLAYER = (wS, existingMovements) => {
-      let checkWinner
+    NEXTPLAYER = (existingMovements) => {
+      let checkWinner = false
       if (this.state.winner) return
       const fExt = findPossibleMoveable(existingMovements)
 
@@ -54,95 +55,107 @@ const composedHigherHOCX = (
       return this.setState({
         board: mvt,
         winner: checkWinner,
-        whoIsNext: !wS,
+        whoIsNext: this.getNextPlayer(this.state.track),
       })
     }
 
-    handleClick = (index) => {
-      let checkWinner
-      let isWinner
+    getNextPlayer = (i = undefined): 'x' | 'y' => {
+      let players: ['y', 'x'] = [
+        'y',
+        'x',
+      ]
+      if (typeof i === 'undefined') {
+        return players[0]
+      }
+      if (i === 1) --i
+      else ++i
+      this.setState({ track: i })
+      return players[i]
+    }
+
+    handleClick = (index: number) => {
       if (this.state.winner) {
         return
       }
 
+      let checkWinner
+      let isWinner
       let copyHighlight = Array(9).fill(null)
       copyHighlight[index] = true
-      let makeFormerBoox = this.state.board.slice()
 
-      if (this.state.board[index].value == null) {
-        if (this.state.spaceX == null) {
+      const board = this.state.board.slice(),
+        box = board[index]
+
+      const clickedBoxIsEmpty = box.value === null
+      if (clickedBoxIsEmpty) {
+        if (this.state.spaceX[0] == null) {
           return
         }
-        if (checkItIncludes(possibleMovements, [this.state.spaceX[0], index])) {
-          makeFormerBoox[index].value = this.state.spaceX[1]
-          makeFormerBoox[this.state.spaceX[0]].value = null
+        if (
+          checkItIncludes(possibleMovements, [
+            this.state.spaceX[0],
+            index,
+          ])
+        ) {
+          box.value = this.state.spaceX[1]
+          board[this.state.spaceX[0]].value = null
           this.setState({
-            spaceX: [null, null],
+            spaceX: [
+              null,
+              null,
+            ],
           })
-          if (checkWinnerExist(winningPosition, makeFormerBoox)) {
-            let newBoox = checkWinnerExist(winningPosition, makeFormerBoox)
+          if (checkWinnerExist(winningPosition, board)) {
             checkWinner = true
-
             isWinner = this.state.whoIsNext ? 'y' : 'x'
-            console.log(isWinner)
-            makeFormerBoox = newBoox
           }
           this.setState({
-            board: makeFormerBoox,
-            whoIsNext: !this.state.whoIsNext,
+            board: board,
+            whoIsNext: this.getNextPlayer(this.state.track),
             winner: checkWinner,
             wrongMove: false,
             cheat: false,
             isWinner: isWinner,
           })
-          if (player === 'OnePlayer') {
-            setTimeout(
-              () => this.NEXTPLAYER(this.state.whoIsNext, makeFormerBoox),
-              1450
-            )
+          if (player === PLAYER.ONEPLAYER) {
+            setTimeout(() => this.NEXTPLAYER(board), 1450)
           }
         } else {
           return this.setState({
             wrongMove: true,
           })
         }
-      } else {
-        let formerValue = this.state.board[index].value
-        if (this.state.whoIsNext) {
-          if (formerValue !== 'y') {
-            this.setState({
-              spaceX: null,
-              cheat: true,
-            })
-            return
-          }
-        } else {
-          if (formerValue !== 'x') {
-            this.setState({
-              spaceX: null,
-              cheat: true,
-            })
-            return
-          }
-        }
+      }
+      // if ClickedBoxIsNotEmpty
+      let indexValue = box.value
+      // find cheat
+      if (this.state.whoIsNext !== box.value) {
         return this.setState({
-          board: makeFormerBoox,
-          highlight: copyHighlight,
-          spaceX: [index, formerValue],
-          wrongMove: false,
-          cheat: false,
+          spaceX: [
+            null,
+            null,
+          ],
+          cheat: true,
         })
       }
+      return this.setState({
+        board: board,
+        highlight: copyHighlight,
+        spaceX: [
+          index,
+          indexValue,
+        ],
+        wrongMove: false,
+        cheat: false,
+      })
     }
 
-    restart = () => {
-      return this.setState({
-        ...this.state,
-        ...initGameState,
-      })
+    restart = async () => {
+      await this.setState(initGameState())
     }
     render() {
       let status = DecideWhatNext(this.state, player)
+
       return (
         <div>
           <button onClick={() => this.restart()} className="restart">
@@ -158,5 +171,5 @@ const composedHigherHOCX = (
     }
   }
 
-composedHigherHOCX().contextType = XjungleContext
+//composedHigherHOCX().contextType = XjungleContext
 export default composedHigherHOCX

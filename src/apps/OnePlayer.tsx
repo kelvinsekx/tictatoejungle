@@ -1,3 +1,4 @@
+import * as React from 'react'
 import GameBox from '../utils/compDatahocx'
 import { PLAYER } from '../utils/types'
 

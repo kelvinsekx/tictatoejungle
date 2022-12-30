@@ -25,7 +25,8 @@ export function checkWinnerExist(arr: any[], filter: any[]) {
   return false
 }
 
-export function mutatePossibleMvt(ext: any[], mutant: any[]) {
+type TMxt = { value: 'y' | 'x' | null, isPT: boolean }[]
+export function mutatePossibleMvt(ext: TMxt, mutant: any[]) {
   let newExt = ext.slice()
   newExt[mutant[0]].value = null
   newExt[mutant[1]].value = 'x'

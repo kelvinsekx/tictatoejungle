@@ -3,7 +3,26 @@ import {
   possibleMovements,
 } from './util'
 
-export function findPossibleMoveable(ext) {
+export function findPossibleMoveable(
+  ext: any[]
+){
+  function TMWTD() {
+    for (let x of ptA) {
+      let truthy = true
+      if (keepState.length === x.ar.length) {
+        for (let i = 0; i < keepState.length; i++) {
+          if (
+            keepState[i][0] !== x.ar[i][0] ||
+            keepState[i][1] !== x.ar[i][1]
+          ) {
+            truthy = false
+          }
+        }
+        if (truthy) return x.pt
+      }
+    }
+  }
+  
   let keepState = []
   /**try to keep the state of available movements for x */
   for (let c of possibleMovements) {
@@ -35,22 +54,7 @@ export function findPossibleMoveable(ext) {
      *                      Yours sincerely,
      *                       Robot, sekx.
      */
-    function TMWTD() {
-      for (let x of ptA) {
-        let truthy = true
-        if (keepState.length === x.ar.length) {
-          for (let i = 0; i < keepState.length; i++) {
-            if (
-              keepState[i][0] !== x.ar[i][0] ||
-              keepState[i][1] !== x.ar[i][1]
-            ) {
-              truthy = false
-            }
-          }
-          if (truthy) return x.pt
-        }
-      }
-    }
+    
     let td = TMWTD()
     //console.log(td)
     if (td === 'I') {
