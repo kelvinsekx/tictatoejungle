@@ -8,10 +8,12 @@ const props = {
   board: boardData,
   highlight: Array(9).fill(null),
 }
+
 describe('player board', () => {
-  it('it renders', () => {
+  it('renders at least a button', () => {
     render(<Board {...props} />)
-    expect(screen.getByRole('button').contains('x'))
+    const btns = screen.getAllByRole('button')
+    expect(btns.length).toBeGreaterThan(1)
     screen.debug()
   })
 })
