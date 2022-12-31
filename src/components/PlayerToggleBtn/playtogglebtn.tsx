@@ -25,7 +25,7 @@ const PlayerToggleBtn = ({
     `${styles.btn} ${active ? 'navBtn purple' : 'navBtn'}`
 
   const props = {
-    className: getClassName(pFor),
+    className: getClassName(),
     onClick: handleClick,
   }
   return <button {...props}>{txt()}</button>
