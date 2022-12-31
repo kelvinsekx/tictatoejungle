@@ -21,7 +21,7 @@ const PlayerToggleBtn = ({
     return active ? 'on two players' : 'twoPlayers'
   }
 
-  const getClassName = (player: TActive): string =>
+  const getClassName = (): string =>
     `${styles.btn} ${active ? 'navBtn purple' : 'navBtn'}`
 
   const props = {
