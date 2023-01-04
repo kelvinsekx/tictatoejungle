@@ -54,6 +54,11 @@ code {
   border: 2px solid var(--color-black);
   padding-bottom: 12px;
   color: var(--color-purple);
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 main {

@@ -3,7 +3,7 @@ import { cheat as cheated } from './func'
 import { PLAYER } from './types'
 import { Box } from '../components/Box/box'
 
-export default function XBoard({ handleClick, board, highlight }) {
+export default function XBoard({ handleClick, board, highlight, spaceX }) {
   return (
     <div id="xBoard">
       <div className="flex">
@@ -14,8 +14,10 @@ export default function XBoard({ handleClick, board, highlight }) {
         ].map((i) => (
           <Box
             key={i}
+            index={i}
+            prevBox={spaceX}
             value={board[i].value}
-            onClick={() => handleClick(i)}
+            onClick={(j) => handleClick(j)}
             className={highlight[i] ? 'highlight' : ''}
             id={board[i].isPT ? 'mrk' : null}
           />
@@ -30,8 +32,10 @@ export default function XBoard({ handleClick, board, highlight }) {
         ].map((i) => (
           <Box
             key={i}
+            index={i}
             value={board[i].value}
-            onClick={() => handleClick(i)}
+            prevBox={spaceX}
+            onClick={(j) => handleClick(j)}
             className={highlight[i] ? 'highlight' : ''}
             id={board[i].isPT ? 'mrk' : null}
           />
@@ -46,8 +50,10 @@ export default function XBoard({ handleClick, board, highlight }) {
         ].map((i) => (
           <Box
             key={i}
+            index={i}
             value={board[i].value}
-            onClick={() => handleClick(i)}
+            prevBox={spaceX}
+            onClick={(j) => handleClick(j)}
             className={highlight[i] ? 'highlight' : ''}
             id={board[i].isPT ? 'mrk' : null}
           />
@@ -98,8 +104,7 @@ export function DecideWhatNext(states, player) {
       <Winner>
         {player === PLAYER.TWOPLAYER ? tellIfSekxPredictedWinnerRight : null}
         <strong>
-          {'\u{1F947}'} {whoIsNext ? 'X' : `${username ? username : 'Y'}`}!!
-          oshabloblo..you won {'\u{1F3C6}'}
+          {'\u{1F947}'} {isWinner}!! oshabloblo..you won {'\u{1F3C6}'}
         </strong>
       </Winner>
     )

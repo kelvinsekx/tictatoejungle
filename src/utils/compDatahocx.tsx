@@ -9,6 +9,9 @@ import { initGameState, PLAYER, TInitGameState } from './types'
 import { TellAboutOneplayer } from '../apps/OnePlayer'
 import { TellAboutTwoplayer } from '../apps/TwoPlayers'
 
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+
 interface IProps {}
 
 const composedHigherHOCX = (
@@ -28,19 +31,19 @@ const composedHigherHOCX = (
       const username = localStorage.getItem('username')
       this.setState({
         ...this.state,
-        username: username ? username : this.context.username,
+        //username: username ? username : this.context.username,
       })
     }
 
     componentDidUpdate(_: TInitGameState, prevState: TInitGameState) {
       // somewhat buggy code *()*
       if (prevState.username) return
-      if (prevState.username !== this.context.username) {
-        this.setState({
-          ...this.state,
-          username: this.context.username,
-        })
-      }
+      // if (prevState.username !== this.context.username) {
+      //   this.setState({
+      //     ...this.state,
+      //     username: this.context.username,
+      //   })
+      // }
     }
 
     NEXTPLAYER = (existingMovements) => {
@@ -73,52 +76,58 @@ const composedHigherHOCX = (
       return players[i]
     }
 
-    handleClick = (index: number) => {
-      if (this.state.winner) {
-        return
-      }
+    handleClick = async (index: number) => {
+      console.log(index)
+      if (this.state.spaceX[0].slice(-1)[0] === index) return
+      if (this.state.winner) return
 
-      let checkWinner
-      let isWinner
-      let copyHighlight = Array(9).fill(null)
+      let checkWinner,
+        isWinner,
+        copyHighlight = Array(9).fill(null)
       copyHighlight[index] = true
 
       const board = this.state.board.slice(),
-        box = board[index]
+        box = board[index],
+        indexMoves = this.state.spaceX[0],
+        playerMoves = this.state.spaceX[1]
 
       const clickedBoxIsEmpty = box.value === null
       if (clickedBoxIsEmpty) {
-        if (this.state.spaceX[0] == null) {
+        if (indexMoves.slice(-2)[1] == null) {
           return
         }
+        // if previous moves are not empty proceed
         if (
           checkItIncludes(possibleMovements, [
-            this.state.spaceX[0],
+            indexMoves.slice(-2)[1],
             index,
           ])
         ) {
-          box.value = this.state.spaceX[1]
-          board[this.state.spaceX[0]].value = null
+          box.value = playerMoves.slice(-2)[1]
+          board[indexMoves.slice(-2)[1]].value = null
           this.setState({
             spaceX: [
-              null,
-              null,
+              indexMoves,
+              playerMoves,
             ],
           })
           if (checkWinnerExist(winningPosition, board)) {
             checkWinner = true
-            isWinner = this.state.whoIsNext ? 'y' : 'x'
+            isWinner = this.state.whoIsNext === 'y' ? 'Y' : 'X'
           }
-          this.setState({
-            board: board,
-            whoIsNext: this.getNextPlayer(this.state.track),
+          await this.setState({
             winner: checkWinner,
-            wrongMove: false,
-            cheat: false,
             isWinner: isWinner,
           })
+          setTimeout(
+            () =>
+              this.setState({
+                whoIsNext: this.getNextPlayer(this.state.track),
+              }),
+            1000
+          )
           if (player === PLAYER.ONEPLAYER) {
-            setTimeout(() => this.NEXTPLAYER(board), 1450)
+            setTimeout(() => this.NEXTPLAYER(board), 1850)
           }
         } else {
           return this.setState({
@@ -130,20 +139,31 @@ const composedHigherHOCX = (
       let indexValue = box.value
       // find cheat
       if (this.state.whoIsNext !== box.value) {
-        return this.setState({
+        console.log(this.state.whoIsNext, box.value)
+        await this.setState({
           spaceX: [
-            null,
-            null,
+            [
+              null,
+              null,
+            ],
+            [
+              null,
+              null,
+            ],
           ],
           cheat: true,
         })
+        return
       }
+
+      indexMoves.push(index)
+      playerMoves.push(indexValue)
       return this.setState({
         board: board,
         highlight: copyHighlight,
         spaceX: [
-          index,
-          indexValue,
+          indexMoves,
+          playerMoves,
         ],
         wrongMove: false,
         cheat: false,
@@ -165,7 +185,10 @@ const composedHigherHOCX = (
             <ChildComposedComponent preWinner={this.state.preWinner} />
             {status}
           </div>
-          <XBOARD {...this.state} handleClick={this.handleClick} />
+          <DndProvider backend={HTML5Backend}>
+            <XBOARD {...this.state} handleClick={this.handleClick} />
+          </DndProvider>
+          <div style={{ padding: '2rem' }} />
         </div>
       )
     }
