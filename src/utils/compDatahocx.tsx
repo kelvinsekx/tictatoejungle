@@ -28,7 +28,7 @@ const composedHigherHOCX = (
     static contextType = XjungleContext
 
     componentDidMount() {
-      const username = localStorage.getItem('username')
+      // const username = localStorage.getItem('username')
       this.setState({
         ...this.state,
         //username: username ? username : this.context.username,
