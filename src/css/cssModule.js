@@ -1,3 +1,3 @@
-import './desk.css';
-import './mobile.css';
-import './min-mobile.css';
+import './desk.css'
+import './mobile.css'
+import './min-mobile.css'

@@ -1,0 +1,10 @@
+# ignore these files
+build
+coverage
+
+node_modules
+tsconfig.json
+package-lock.json
+
+# ignore folders/directory
+public/

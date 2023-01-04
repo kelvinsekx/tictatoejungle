@@ -1,15 +1,23 @@
-import React from 'react';
-import { cheat as cheated } from './func';
+import React from 'react'
+import { cheat as cheated } from './func'
+import { PLAYER } from './types'
+import { Box } from '../components/Box/box'
 
-export default function XBoard({ handleClick, board, highlight }) {
+export default function XBoard({ handleClick, board, highlight, spaceX }) {
   return (
     <div id="xBoard">
       <div className="flex">
-        {[0, 1, 2].map((i) => (
+        {[
+          0,
+          1,
+          2,
+        ].map((i) => (
           <Box
             key={i}
-            v={board[i].value}
-            onClick={() => handleClick(i)}
+            index={i}
+            prevBox={spaceX}
+            value={board[i].value}
+            onClick={(j) => handleClick(j)}
             className={highlight[i] ? 'highlight' : ''}
             id={board[i].isPT ? 'mrk' : null}
           />
@@ -17,11 +25,17 @@ export default function XBoard({ handleClick, board, highlight }) {
       </div>
       <BoxTriangle1 />
       <div className="flex fcv">
-        {[3, 4, 5].map((i) => (
+        {[
+          3,
+          4,
+          5,
+        ].map((i) => (
           <Box
             key={i}
-            v={board[i].value}
-            onClick={() => handleClick(i)}
+            index={i}
+            value={board[i].value}
+            prevBox={spaceX}
+            onClick={(j) => handleClick(j)}
             className={highlight[i] ? 'highlight' : ''}
             id={board[i].isPT ? 'mrk' : null}
           />
@@ -29,18 +43,24 @@ export default function XBoard({ handleClick, board, highlight }) {
       </div>
       <BoxTriangle2 />
       <div className="flex">
-        {[6, 7, 8].map((i) => (
+        {[
+          6,
+          7,
+          8,
+        ].map((i) => (
           <Box
             key={i}
-            v={board[i].value}
-            onClick={() => handleClick(i)}
+            index={i}
+            value={board[i].value}
+            prevBox={spaceX}
+            onClick={(j) => handleClick(j)}
             className={highlight[i] ? 'highlight' : ''}
             id={board[i].isPT ? 'mrk' : null}
           />
         ))}
       </div>
     </div>
-  );
+  )
 }
 
 function Pronounce({ children, styles, id }) {
@@ -48,76 +68,72 @@ function Pronounce({ children, styles, id }) {
     <span style={{ ...styles }} id={id} className="pron">
       {children}
     </span>
-  );
+  )
 }
 
 function Winner({ children }) {
-  return <span className="winner">{children}</span>;
+  return <span className="winner">{children}</span>
 }
 
 function Cheated({ children }) {
-  return <span className="cheated">{children}</span>;
+  return <span className="cheated">{children}</span>
 }
 
 export function DecideWhatNext(states, player) {
-  const {
-    winner,
-    wrongMove,
-    whoIsNext,
-    cheat,
-    isWinner,
-    preWinner,
-    username,
-  } = states;
+  // prettier-ignore
+  const { 
+    winner, wrongMove, whoIsNext, 
+    cheat, isWinner, preWinner, 
+    username 
+  } = states
+
   if (wrongMove) {
     return (
-      <Pronounce id="pr-kr">
-        {' '}
-        Kharrma, this is an impossible movement
-      </Pronounce>
-    );
+      <Pronounce id="pr-kr"> Kharrma, this is an impossible movement</Pronounce>
+    )
   }
-  return winner ? (
-    <Winner>
-      {player === 'TwoPlayers' ? (
-        preWinner === isWinner ? (
-          <div>sekx predicted well</div>
-        ) : (
-          <div>you proved sekx wrong. congrats</div>
-        )
+
+  if (winner) {
+    const tellIfSekxPredictedWinnerRight =
+      preWinner === isWinner ? (
+        <div>sekx predicted well</div>
       ) : (
-        ''
-      )}
-      <strong>
-        {'\u{1F947}'}{' '}
-        {whoIsNext ? 'X' : `${username ? username : 'Y'}`}!!
-        oshabloblo..you won {'\u{1F3C6}'}
-      </strong>
-    </Winner>
-  ) : whoIsNext ? (
-    <div>
-      <Pronounce
-        styles={{ backgroundColor: 'yellow', color: '#000' }}
-      >
-        {`${username ? username : 'Y'}, you are next`}
-      </Pronounce>
+        <div>you proved sekx wrong. Congrats</div>
+      )
+    return (
+      <Winner>
+        {player === PLAYER.TWOPLAYER ? tellIfSekxPredictedWinnerRight : null}
+        <strong>
+          {'\u{1F947}'} {isWinner}!! oshabloblo..you won {'\u{1F3C6}'}
+        </strong>
+      </Winner>
+    )
+  }
+  if (whoIsNext === 'y')
+    return (
+      <div>
+        <Pronounce styles={{ backgroundColor: 'yellow', color: '#000' }}>
+          {`${username ? username : 'Y'}, you are next`}
+        </Pronounce>
 
-      {cheat ? <Cheated> X {cheated()}</Cheated> : ''}
-    </div>
-  ) : (
-    <div>
-      <Pronounce styles={{ backgroundColor: 'green', color: '#fff' }}>
-        X, you are Next{' '}
-      </Pronounce>
+        {cheat ? <Cheated> X {cheated()}</Cheated> : ''}
+      </div>
+    )
+  else
+    return (
+      <div>
+        <Pronounce styles={{ backgroundColor: 'green', color: '#fff' }}>
+          X, you are Next{' '}
+        </Pronounce>
 
-      {cheat ? (
-        <Cheated>
-          {' '}
-          {`${username ? username : 'Y'}`} {cheated()}
-        </Cheated>
-      ) : null}
-    </div>
-  );
+        {cheat ? (
+          <Cheated>
+            {' '}
+            {`${username ? username : 'Y'}`} {cheated()}
+          </Cheated>
+        ) : null}
+      </div>
+    )
 }
 
 export function BoxTriangle1() {
@@ -126,7 +142,7 @@ export function BoxTriangle1() {
       <div className="recol-11"></div>
       <div className="recol-21"></div>
     </div>
-  );
+  )
 }
 
 export function BoxTriangle2() {
@@ -135,13 +151,5 @@ export function BoxTriangle2() {
       <div className="recol-1"></div>
       <div className="recol-2"></div>
     </div>
-  );
-}
-
-export function Box({ className, onClick, id, v }) {
-  return (
-    <button className={`box ${className}`} onClick={onClick} id={id}>
-      {v}
-    </button>
-  );
+  )
 }
