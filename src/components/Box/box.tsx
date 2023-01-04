@@ -17,7 +17,7 @@ type TBox = {
 
 export function Box({ className, onClick, id, value, index, prevBox }: TBox) {
   const [
-    {},
+    { isOver },
     drop,
   ] = useDrop(
     () => ({
@@ -31,6 +31,10 @@ export function Box({ className, onClick, id, value, index, prevBox }: TBox) {
       drop: () => {
         onClick(index)
       },
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+        canDrop: !!monitor.canDrop(),
+      }),
     }),
     [index]
   )
@@ -51,6 +55,7 @@ export function Box({ className, onClick, id, value, index, prevBox }: TBox) {
           return { player: 'player' }
         }}
       />
+      {isOver && null}
     </div>
   )
 }
