@@ -34,7 +34,7 @@ export const initGameState: ()=>TInitGameState = ()=>{
     { value: 'x', isPT: false },
   ],
   highlight: Array(9).fill(null),
-  spaceX: [[null, null], [null, null]] /**[index, indexValue]=[0, 'y'] from initGameState above */,
+  spaceX: [null, null] /**[index, indexValue]=[0, 'y'] from initGameState above */,
   whoIsNext: getNextPlayer(),
   track:0,
   winner: false,
@@ -47,10 +47,8 @@ export const initGameState: ()=>TInitGameState = ()=>{
 }
 
 type Tindex = null|number;
-type TMoves = [Tindex, Tindex]
 
 type TPlayer = 'y'|'x'|null
-type TPMoves = [TPlayer, TPlayer]
 
 export type TInitGameState = {
     username: string;
@@ -61,7 +59,7 @@ export type TInitGameState = {
     wrongMove: boolean;
     winner: boolean;
     whoIsNext: 'y' | 'x';
-    spaceX: [TMoves, TPMoves],
+    spaceX: [Tindex, TPlayer],
     highlight: any[],
     board: any[]
 }

@@ -15,7 +15,8 @@ export default function XBoard({ handleClick, board, highlight, spaceX }) {
           <Box
             key={i}
             index={i}
-            prevBox={spaceX}
+            board={board}
+            prevIndex={spaceX[0]}
             value={board[i].value}
             onClick={(j) => handleClick(j)}
             className={highlight[i] ? 'highlight' : ''}
@@ -34,7 +35,7 @@ export default function XBoard({ handleClick, board, highlight, spaceX }) {
             key={i}
             index={i}
             value={board[i].value}
-            prevBox={spaceX}
+            prevIndex={spaceX[0]}
             onClick={(j) => handleClick(j)}
             className={highlight[i] ? 'highlight' : ''}
             id={board[i].isPT ? 'mrk' : null}
@@ -52,7 +53,7 @@ export default function XBoard({ handleClick, board, highlight, spaceX }) {
             key={i}
             index={i}
             value={board[i].value}
-            prevBox={spaceX}
+            prevIndex={spaceX[0]}
             onClick={(j) => handleClick(j)}
             className={highlight[i] ? 'highlight' : ''}
             id={board[i].isPT ? 'mrk' : null}

@@ -2,9 +2,7 @@ import * as React from 'react'
 import { useDrop } from 'react-dnd'
 import { Piece } from '../Piece/piece'
 
-import { ItemTypes, TInitGameState } from '../../utils/types'
-import { possibleMovements } from '../../utils/util'
-import { checkItIncludes } from '../../utils/func'
+import { ItemTypes } from '../../utils/types'
 
 type TBox = {
   className: string
@@ -12,22 +10,27 @@ type TBox = {
   id: string
   value: string
   index: number
-  prevBox: Pick<TInitGameState, 'spaceX'>
+  prevIndex: number | null
+  board: any[]
 }
 
-export function Box({ className, onClick, id, value, index, prevBox }: TBox) {
+export function Box({
+  className,
+  board,
+  onClick,
+  id,
+  value,
+  index,
+  prevIndex,
+}: TBox) {
+  //console.log(board)
   const [
     { isOver },
     drop,
   ] = useDrop(
     () => ({
       accept: ItemTypes.PLAYER,
-      canDrop: () => {
-        return checkItIncludes(possibleMovements, [
-          prevBox[0].slice(-2)[1],
-          index,
-        ])
-      },
+
       drop: () => {
         onClick(index)
       },
@@ -52,6 +55,7 @@ export function Box({ className, onClick, id, value, index, prevBox }: TBox) {
         player={value}
         onDrag={() => {
           onClick(index)
+          console.log('inde', index)
           return { player: 'player' }
         }}
       />

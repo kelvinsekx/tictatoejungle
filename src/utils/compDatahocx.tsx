@@ -9,14 +9,11 @@ import { initGameState, PLAYER, TInitGameState } from './types'
 import { TellAboutOneplayer } from '../apps/OnePlayer'
 import { TellAboutTwoplayer } from '../apps/TwoPlayers'
 
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-
 interface IProps {}
 
 const composedHigherHOCX = (
   ChildComposedComponent: typeof TellAboutOneplayer | typeof TellAboutTwoplayer,
-  player: PLAYER
+  playerMode: PLAYER
 ) =>
   class Player extends React.Component<IProps, TInitGameState> {
     constructor(props: IProps) {
@@ -77,8 +74,7 @@ const composedHigherHOCX = (
     }
 
     handleClick = async (index: number) => {
-      console.log(index)
-      if (this.state.spaceX[0].slice(-1)[0] === index) return
+      if (this.state.spaceX[0] === index) return
       if (this.state.winner) return
 
       let checkWinner,
@@ -86,84 +82,69 @@ const composedHigherHOCX = (
         copyHighlight = Array(9).fill(null)
       copyHighlight[index] = true
 
-      const board = this.state.board.slice(),
+      const s = { ...this.state },
+        board = s.board.slice(),
         box = board[index],
-        indexMoves = this.state.spaceX[0],
-        playerMoves = this.state.spaceX[1]
+        prevIndex = s.spaceX[0],
+        prevPlayer = s.spaceX[1]
 
       const clickedBoxIsEmpty = box.value === null
       if (clickedBoxIsEmpty) {
-        if (indexMoves.slice(-2)[1] == null) {
-          return
-        }
+        if (prevIndex == null) return
+        if (s.cheat) return
         // if previous moves are not empty proceed
         if (
           checkItIncludes(possibleMovements, [
-            indexMoves.slice(-2)[1],
+            prevIndex,
             index,
           ])
         ) {
-          box.value = playerMoves.slice(-2)[1]
-          board[indexMoves.slice(-2)[1]].value = null
-          this.setState({
-            spaceX: [
-              indexMoves,
-              playerMoves,
-            ],
-          })
+          box.value = prevPlayer
+          board[prevIndex].value = null
           if (checkWinnerExist(winningPosition, board)) {
             checkWinner = true
             isWinner = this.state.whoIsNext === 'y' ? 'Y' : 'X'
           }
           await this.setState({
+            ...s,
             winner: checkWinner,
             isWinner: isWinner,
           })
-          setTimeout(
+          await setTimeout(
             () =>
               this.setState({
                 whoIsNext: this.getNextPlayer(this.state.track),
               }),
             1000
           )
-          if (player === PLAYER.ONEPLAYER) {
-            setTimeout(() => this.NEXTPLAYER(board), 1850)
+          if (playerMode === PLAYER.ONEPLAYER) {
+            await setTimeout(() => this.NEXTPLAYER(board), 1200)
           }
+          return
         } else {
           return this.setState({
             wrongMove: true,
+            spaceX: [
+              null,
+              null,
+            ],
           })
         }
       }
       // if ClickedBoxIsNotEmpty
-      let indexValue = box.value
+      let player = box.value
       // find cheat
       if (this.state.whoIsNext !== box.value) {
-        console.log(this.state.whoIsNext, box.value)
-        await this.setState({
-          spaceX: [
-            [
-              null,
-              null,
-            ],
-            [
-              null,
-              null,
-            ],
-          ],
+        return this.setState({
           cheat: true,
         })
-        return
       }
-
-      indexMoves.push(index)
-      playerMoves.push(indexValue)
-      return this.setState({
+      return await this.setState({
         board: board,
         highlight: copyHighlight,
         spaceX: [
-          indexMoves,
-          playerMoves,
+          index,
+          player,
         ],
         wrongMove: false,
         cheat: false,
@@ -173,8 +154,9 @@ const composedHigherHOCX = (
     restart = async () => {
       await this.setState(initGameState())
     }
+
     render() {
-      let status = DecideWhatNext(this.state, player)
+      let status = DecideWhatNext(this.state, playerMode)
 
       return (
         <div>
@@ -185,9 +167,7 @@ const composedHigherHOCX = (
             <ChildComposedComponent preWinner={this.state.preWinner} />
             {status}
           </div>
-          <DndProvider backend={HTML5Backend}>
-            <XBOARD {...this.state} handleClick={this.handleClick} />
-          </DndProvider>
+          <XBOARD {...this.state} handleClick={this.handleClick} />
           <div style={{ padding: '2rem' }} />
         </div>
       )

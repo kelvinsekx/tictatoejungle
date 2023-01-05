@@ -5,12 +5,44 @@ import { XjungleContext as Context } from './utils/context'
 
 import XJungle from './App'
 
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { TouchBackend } from 'react-dnd-touch-backend'
+
 function Game() {
-  const [username, setUsername] = React.useState<string>('')
+  const [
+    username,
+    setUsername,
+  ] = React.useState<string>('')
+
   return (
     <Context.Provider value={{ username, setUsername }}>
-      <XJungle />
+      <GameBox />
     </Context.Provider>
+  )
+}
+
+function GameBox() {
+  const [
+    width,
+    setWidth,
+  ] = React.useState<number>(window.innerWidth)
+
+  React.useEffect(() => {
+    setWidth(window.innerWidth)
+  }, [])
+
+  if (width < 830)
+    return (
+      <DndProvider backend={TouchBackend}>
+        <XJungle />
+      </DndProvider>
+    )
+
+  return (
+    <DndProvider backend={HTML5Backend}>
+      <XJungle />
+    </DndProvider>
   )
 }
 
@@ -20,8 +52,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 )
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-//reportWebVitals(console.log);
