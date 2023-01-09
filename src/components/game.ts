@@ -65,7 +65,8 @@ export class Game implements TGame {
      this.winnerExist = checkWinnerExist(winningPosition, this.board)
      if(this.winnerExist){
         this.emit({
-            winner: this.winnerExist 
+            winner: this.winnerExist,
+            isWinner: this.box.value.toUpperCase() 
         })
      }
      return this.winnerExist
@@ -107,17 +108,6 @@ export class Game implements TGame {
             })
         }
         this.isWinnerExist()
-    }
-
-    getWinner(){
-        if (this.winnerExist) {
-            const winner = this.state.whoIsNext === 'y' ? 'Y' : 'X'
-
-            this.emit({
-                winner: true,
-                isWinner: winner,
-            })
-        }
     }
 
     nextPlayer() {
