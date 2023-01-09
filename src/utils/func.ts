@@ -19,7 +19,7 @@ export function checkWinnerExist(arr: any[], filter: any[]) {
       filter[each[0]].isPT = true
       filter[each[1]].isPT = true
       filter[each[2]].isPT = true
-      return filter
+      return true
     }
   }
   return false
