@@ -39,13 +39,15 @@ export class Game implements TGame {
         this.isGameTypeSingle = mode === PLAYER.ONEPLAYER
     }
 
-    async play(index, board){
+    async play(index, state){
         if (this.isWinnerExist())return
+        this.state = state
 
-        this.board = board
-        this.box = board[index]
+        this.board = state.board
+        this.box = state.board[index]
+        this.prevBox = state.board[this.prevIndex]
+
         this.presentIndex = index
-        this.prevBox = this.board[this.prevIndex]
     
         if(this.box.value === null){
             this.exchangePlayers()
@@ -53,18 +55,21 @@ export class Game implements TGame {
             return this.copyBox()
         }
         if(!this.isValidMovement || this.cheated) return
+        if(this.isWinnerExist())return;
         this.next()
         if(this.isGameTypeSingle ) {
             await setTimeout(()=>{
-                this.nextPlayer()
+                return this.nextPlayer()
             }, 2000)
         }
+        return
     }
 
     isWinnerExist(){
      this.winnerExist = checkWinnerExist(winningPosition, this.board)
      if(this.winnerExist){
         this.emit({
+            ...this.state,
             winner: this.winnerExist,
             isWinner: this.box.value.toUpperCase() 
         })
@@ -73,7 +78,7 @@ export class Game implements TGame {
     }
 
     isMovementValid(){
-        return this.isValidMovement = checkItIncludes(possibleMovements, [
+        return this.isValidMovement = this.prevIndex === null ? true : checkItIncludes(possibleMovements, [
             this.prevIndex,
             this.presentIndex
           ])
@@ -81,104 +86,91 @@ export class Game implements TGame {
 
     hasCheated(){
         this.cheated = this.nextplayer !== this.box.value
-        return this.emit({
-              cheat: true,
-            })
+
+         this.emit({
+            ...this.state,
+              cheat: this.cheated,
+              whoIsNext: this.nextplayer
+        })
+        return this.cheated
     }
 
-    exchangePlayers(){
+
+    async exchangePlayers(){
         if(!this.isMovementValid())
             return this.emit({
+                ...this.state,
                 wrongMove: true,
-                spaceX: [
-                 null,
-                 null,
-                ]
             })
-        if(this.cheated)
-            return this.emit({
-                cheat: true,
-            })
-        if (this.isValidMovement) {
-            this.box.value = this.prevPlayer
-            this.prevBox.value = null
-            this.emit({
-                board: this.board,
-                wrongMove: false
-            })
-        }
-        this.isWinnerExist()
+        if(this.cheated || (this.prevPlayer == null))
+            return this.hasCheated()
+
+        this.box.value = this.nextplayer
+        this.prevBox.value = null
+
+        this.prevPlayer = null
+        //set prev Errors to default
+        this.state.wrongMove = false
+        this.state.cheat = false
+        this.state.spaceX = [
+            this.prevIndex,
+            this.prevPlayer
+        ]
     }
 
     nextPlayer() {
-        let checkWinner = false
-        if(this.cheated || this.winnerExist)return
+        if(this.winnerExist)return
         const fExt = findPossibleMoveable(this.board)
   
         let mvt = mutatePossibleMvt(this.board, fExt)
         if (checkWinnerExist(winningPosition, this.board)) {
-          checkWinner = true
+           return this.emit({
+                ...this.state,
+                winner: this.winnerExist,
+                isWinner: this.box.value.toUpperCase() 
+            })
         }
         return this.emit({
+            ...this.state,
           board: mvt,
-          winner: checkWinner,
-          whoIsNext: this.getNextPlayer(this.state.track),
+          whoIsNext: this.getNextPlayer(),
         })
       }
 
-      getNextPlayer = (i = undefined): 'x' | 'y' => {
+      getNextPlayer = (): 'x' | 'y' => {
         let players: ['y', 'x'] = [
           'y',
           'x',
         ]
-        if (typeof i === 'undefined') {
-          return players[0]
-        }
         if (this.track === 1) --this.track
         else ++this.track
-        this.emit({ track: this.track })
+        this.emit({ ...this.state,track: this.track })
         return this.nextplayer = players[this.track]
       }
 
       next(){
-            return this.emit({
-                whoIsNext: this.getNextPlayer(this.track),
-            })
+        return this.emit({
+            ...this.state,
+            whoIsNext: this.getNextPlayer(),
+        })
       }
 
       copyBox(){
-        this.isCheating()
-        if(this.cheated) return;
+        if(this.hasCheated()) return;
         const copyHighlight = Array(9).fill(null);
         copyHighlight[this.presentIndex] = true
 
         this.prevIndex = this.presentIndex;
-        this.prevPlayer = this.box.value;
+        this.prevPlayer = this.box.value
 
         this.emit({
-          board: this.board,
-          highlight: copyHighlight,
-          spaceX: [
-            this.presentIndex,
-            this.box.value,
-          ],
-          wrongMove: false,
-          cheat: false,
+            ...this.state,
+            highlight: copyHighlight,
+            spaceX: [
+                this.presentIndex,
+                this.box.value,
+            ],
         })
-      }
-
-      isCheating(){
-        if (this.nextplayer === this.box.value) {
-            this.cheated = false
-             this.emit({
-                cheat: false
-            })
-        }else{
-            this.cheated = true
-            this.emit({
-                cheat: true
-            })
-        }
       }
 
       restart (){

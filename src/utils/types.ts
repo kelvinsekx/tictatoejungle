@@ -10,16 +10,6 @@ export type Tstate = {
   isFirstTimer: boolean
 }
 
-export const getNextPlayer = function (i = undefined): 'x'|'y'{
-    let players: ['y', 'x'] = ['y', 'x']
-    if(typeof i === 'undefined') {
-        return players[0]
-    }
-  	if(i === 1)--i;
-    else ++i
-    return players[i]
-}
-
 export const initGameState: ()=>TInitGameState = ()=>{
     return ({
   board: [
@@ -35,7 +25,7 @@ export const initGameState: ()=>TInitGameState = ()=>{
   ],
   highlight: Array(9).fill(null),
   spaceX: [null, null] /**[index, indexValue]=[0, 'y'] from initGameState above */,
-  whoIsNext: getNextPlayer(),
+  whoIsNext: 'y',
   track:0,
   winner: false,
   wrongMove: false,
