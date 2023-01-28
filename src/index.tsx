@@ -9,6 +9,8 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { TouchBackend } from 'react-dnd-touch-backend'
 
+import ReactGA from 'react-ga'
+
 function Game() {
   const [
     username,
@@ -45,6 +47,8 @@ function GameBox() {
     </DndProvider>
   )
 }
+
+ReactGA.initialize('G-K0W9L1WZHK')
 
 ReactDOM.render(
   <React.StrictMode>
