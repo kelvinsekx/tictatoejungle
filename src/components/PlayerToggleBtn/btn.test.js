@@ -29,6 +29,5 @@ describe('players toggle button', () => {
     const txtContent =
       props.active === false ? txt[random]['false'] : txt[random]['true']
     expect(screen.getByText(txtContent)).toBeInTheDocument()
-    screen.debug()
   })
 })

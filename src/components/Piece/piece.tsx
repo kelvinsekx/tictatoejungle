@@ -5,7 +5,7 @@ interface TPieceProps {
   player: string
   onDrag: () => { player: string }
 }
-export const Piece: React.FC<TPieceProps> = ({ player, onDrag }) => {
+export const Piece = ({ player, onDrag }: TPieceProps) => {
   const isPlayer = !!player
   return isPlayer ? <Player player={player} onDrag={onDrag} /> : null
 }

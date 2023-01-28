@@ -14,15 +14,7 @@ type TBox = {
   board: any[]
 }
 
-export function Box({
-  className,
-  board,
-  onClick,
-  id,
-  value,
-  index,
-  prevIndex,
-}: TBox) {
+export function Box({ className, onClick, id, value, index }: TBox) {
   //console.log(board)
   const [
     { isOver },
@@ -55,7 +47,6 @@ export function Box({
         player={value}
         onDrag={() => {
           onClick(index)
-          console.log('inde', index)
           return { player: 'player' }
         }}
       />
