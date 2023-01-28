@@ -1,5 +1,7 @@
 # PlayXYjungle Naija Game
 
+[![CI/CD](https://github.com/kelvinsekx/tictatoejungle/actions/workflows/gh-ci.yml/badge.svg)](https://github.com/kelvinsekx/tictatoejungle/actions/workflows/gh-ci.yml)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and authored solely by [kelvinsekx](https://twitter.com/kelvinsekx).
 
 The game is a very popular one among Nigerians and was common among kids in the early 2000s.
